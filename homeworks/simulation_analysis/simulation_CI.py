@@ -112,19 +112,19 @@ def main():
     fig.savefig('figs/unif_mean_accuracy.pdf', bbox_inches='tight')
 
     # Find confidence intervals for the variance vs. n
-    print('\nFind confidence intervals for the variance vs. n')
+    print('\nFind confidence intervals for the VARIANCE vs. n')
 
     #plot confidence intervals for the variance vs. n
     fig,ax=plt.subplots( figsize=(10,6))
     for lower, upper, y in zip(N_df_unif['std_low'],N_df_unif['std_up'], N_df_unif['N']):
-        ax.plot((lower,upper), (y,y),color='darkorange',linewidth=2)
-    ax.plot((lower,upper), (y,y) ,color='darkorange', alpha=0.5, label='CI', linewidth=2)
-    ax.plot(N_df_unif['std'], N_df_unif['N'],'ro',color='teal', label = 'STD', markersize=5)
+        ax.plot((lower**2,upper**2), (y,y),color='darkorange',linewidth=2)
+    ax.plot((lower**2,upper**2), (y,y) ,color='darkorange', alpha=0.5, label='CI', linewidth=2)
+    ax.plot(N_df_unif['std']**2, N_df_unif['N'],'ro',color='teal', label = 'STD', markersize=5)
     ax.legend(loc='upper left')
-    ax.set_xlabel('STD')
+    ax.set_xlabel(r"$\sigma^2$")
     ax.set_ylabel('N')
-    ax.set_xlim(0.15,0.45)
-    fig.savefig('figs/unif_std_CI.png', bbox_inches='tight')
+    ax.set_xlim(0.02,0.145)
+    fig.savefig('figs/unif_variance_CI.png', bbox_inches='tight')
 
 
     # Find 95% prediction interval using theory and using bootstrap
@@ -206,14 +206,14 @@ def main():
     #plot confidence intervals for the variance vs. n
     fig,ax=plt.subplots( figsize=(10,6))
     for lower, upper, y in zip(N_df_norm['std_low'],N_df_norm['std_up'], N_df_norm['N']):
-        ax.plot((lower,upper), (y,y),color='darkorange',linewidth=2)
-    ax.plot((lower,upper), (y,y) ,color='darkorange', alpha=0.5, label='CI', linewidth=2)
-    ax.plot(N_df_norm['std'], N_df_norm['N'],'ro',color='teal', label = 'STD', markersize=5)
+        ax.plot((lower**2,upper**2), (y,y),color='darkorange',linewidth=2)
+    ax.plot((lower**2,upper**2), (y,y) ,color='darkorange', alpha=0.5, label='CI', linewidth=2)
+    ax.plot(N_df_norm['std']**2, N_df_norm['N'],'ro',color='teal', label = 'STD', markersize=5)
     ax.legend(loc='upper left')
-    ax.set_xlabel('STD')
+    ax.set_xlabel(r"$\sigma**2$")
     ax.set_ylabel('N')
-    ax.set_xlim(0.6,1.45)
-    fig.savefig('figs/norm_std_CI.png', bbox_inches='tight')
+    ax.set_xlim(0.25,2)
+    fig.savefig('figs/norm_variance_CI.png', bbox_inches='tight')
 
 
 
