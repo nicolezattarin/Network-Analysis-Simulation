@@ -3,7 +3,7 @@ import argparse
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def stat_sim(N, distr, level=0.95, verbose=False):
+def stat_sim(N, distr, level=0.95, verbose=False, comp_std='sample'):
     """
     This function generates N data and calculate the mean, the standard deviation and the
     confidence interval of mean and std
@@ -16,10 +16,11 @@ def stat_sim(N, distr, level=0.95, verbose=False):
     
     # Calculate mean and standard deviation
     mean = np.mean(data)
-    if distr == "unif":
-        std = np.sqrt((N-1)/N*np.std(data)**2)
-    elif distr == "norm":
+    if comp_std == "sample":
         std = np.std(data)
+    else:
+        std = np.sqrt((N-1)/N*np.std(data)**2)
+        
 
     from scipy.stats import norm 
     from scipy.stats import t
@@ -46,12 +47,12 @@ def stat_sim(N, distr, level=0.95, verbose=False):
         print("The CI of the std for level = {:.2f} is [{:.2f}, {:.2f}].".format(level, std_low, std_high))
     return mean, std, mean_minus, mean_plus, std_low, std_high
 
-def bootstrap_prediction_interval(data, level=0.95, r0=25):
+def bootstrap_CI(data, level=0.95, r0=100):
     """
-    returns the prediction interval for the mean or the std  with bootstrap
+    returns the confidence interval for the mean or the std  with bootstrap
     """
 
-    R = np.ceil(2*r0/(1-level))-1
+    R = int(np.ceil(2*r0/(1-level))-1)
     stat = [] 
     for r in range(1,R):
         from random import choices
@@ -69,11 +70,11 @@ def order_stat_prediction_interval(data, level=0.95):
     if alpha < 2/(N-1): 
         print("Warning: the confidence level is too low to calculate the prediction interval")
         return None
-    low_index = np.floor(alpha*(N+1)/2.)
-    high_index = np.ceil((1-alpha/2.)*(N+1))
+    low_index = int(np.floor(alpha*(N+1)/2.)-1)
+    high_index = int(np.ceil((1-alpha/2.)*(N+1))-1)
     return ordered[low_index], ordered[high_index]
 
-def prediction_interval(data, distr, level=0.95, verbose=False, method="bootstrap"):
+def prediction_interval(data, level=0.95, verbose=False, method="bootstrap"):
     """
     This function gets N data and calculate the mean, the standard deviation and the
     prediction interval of the mean.
@@ -84,9 +85,11 @@ def prediction_interval(data, distr, level=0.95, verbose=False, method="bootstra
     mean = np.mean(data)
 
     if method == "bootstrap":
-        mean_low, mean_high = bootstrap_prediction_interval(data, level=level, stat="mean")
+        mean_low, mean_high = bootstrap_CI(data, level=level)
     elif method == "order_stat":
         mean_low, mean_high = order_stat_prediction_interval(data, level=level)
+    print("PI with {}: [{:.2f},{:.2f}]".format(method, mean_low, mean_high))
+
     return mean, mean_low, mean_high
            
 
@@ -144,7 +147,7 @@ def main():
     # Generate n iid U(0,1) r.v.’s, and compute sample mean and sample variance
     print ('\nSimulation with n iid U(0,1) r.v.')
     nmax = 1000
-    ns = np.arange(1,nmax+1, 20)
+    ns = np.arange(20,nmax+1, 20)
     N_df_unif = pd.DataFrame(np.zeros(shape=(len(ns),7)), columns=["N", "mean", "std", "mean_low", "mean_up", "std_low", "std_up"] )
     for i in range(len(ns)):
         np.random.seed(0)
@@ -179,7 +182,24 @@ def main():
 
 
     # Find 95% prediction interval using theory and using bootstrap
-    print('\nFind 95% prediction interval using theory')
+    print('\nFind 95% prediction interval using theory for N=1000')
+    np.random.seed(0)
+    N=1000
+    data = np.random.uniform(0,1,size=N)
+    m_stat, low_stat, high_stat = prediction_interval(data[:N], method="order_stat")
+    m_boot, low_boot, high_boot = prediction_interval(data[:N], method="bootstrap")
+    
+    fig, ax = plt.subplots(figsize=(10,6))
+    g=sns.histplot(x=data, color='darkorange', bins=30, label='data', linewidth=0, alpha=0.5)
+    ax.axvline(x=m_stat, color='black', linestyle='solid', label='mean', linewidth=3)
+    ax.axvline(x=low_stat, color='teal', linestyle='dashed',label = 'order statistic', linewidth=3)
+    ax.axvline(x=high_stat, color='teal', linestyle='dashed', linewidth=3)
+    ax.axvline(x=low_boot, color='magenta', linestyle='dashed',label = 'bootstrap', linewidth=3)
+    ax.axvline(x=high_boot, color='magenta', linestyle='dashed',  linewidth=3)
+
+    g.legend(loc='center left', bbox_to_anchor=(1, 0.5), borderaxespad=0.)
+    ax.set_xlabel(r"Data")
+    fig.savefig('figs/unif_PI.pdf', bbox_inches='tight')
 
 
     """
@@ -265,6 +285,24 @@ def main():
 
     # Find 95% prediction interval using theory and using bootstrap
     print('\nFind 95% prediction interval using theory')
+    np.random.seed(0)
+    N=1000
+    data = np.random.normal(0,1,size=N)
+    m_stat, low_stat, high_stat = prediction_interval(data[:N], method="order_stat")
+    m_boot, low_boot, high_boot = prediction_interval(data[:N], method="bootstrap")
+    
+    fig, ax = plt.subplots(figsize=(10,6))
+    g=sns.histplot(x=data, color='darkorange', bins=30, label='data', linewidth=0, alpha=0.5)
+    ax.axvline(x=m_stat, color='black', linestyle='solid', label='mean', linewidth=3)
+    ax.axvline(x=low_stat, color='teal', linestyle='dashed',label = 'order statistic', linewidth=3)
+    ax.axvline(x=high_stat, color='teal', linestyle='dashed', linewidth=3)
+    ax.axvline(x=low_boot, color='magenta', linestyle='dashed',label = 'bootstrap', linewidth=3)
+    ax.axvline(x=high_boot, color='magenta', linestyle='dashed',  linewidth=3)
+
+    g.legend(loc='center left', bbox_to_anchor=(1, 0.5), borderaxespad=0.)
+    ax.set_xlabel(r"Data")
+    fig.savefig('figs/norm_PI.pdf', bbox_inches='tight')
+
 
 if __name__ == "__main__":
     main()
