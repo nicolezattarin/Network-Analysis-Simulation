@@ -32,7 +32,7 @@ def stat_sim(N, distr, level=0.95, verbose=False):
     std_high = std*np.sqrt(b/(N-1))
     
     if verbose: 
-        print("The mean is {:.2f} and the standard deviation is {:.2f}.".format(mean, std))
+        print("The mean is {:.2f} and the standar d deviation is {:.2f}.".format(mean, std))
         print("The CI of the mean for level = {:.2f} is [{:.2f}, {:.2f}].".format(level, mean_minus, mean_plus))
         print("The CI of the std for level = {:.2f} is [{:.2f}, {:.2f}].".format(level, std_low, std_high))
     return mean, std, mean_minus, mean_plus, std_low, std_high
@@ -42,7 +42,8 @@ def main():
     """
     UNIFORM DISTRIBUTION
     """
-    # np.random.seed(0)
+    np.random.seed(0)
+    sns.set_theme(style='white',palette='Dark2',font_scale=2)
 
     print("\nUNIFORM DISTRIBUTION")
     # simulation with 48 iid unif(0,1)
@@ -69,11 +70,10 @@ def main():
 
     #distribution of the mean plot
     fig,ax=plt.subplots(figsize=(10,6))
-    sns.set_theme(style='white',palette='Dark2',font_scale=1.5)
-    sns.histplot(x='mean', data=unif_df, color='darkorange', bins=30, alpha=1, label='Mean')
+    sns.histplot(x='mean', data=unif_df, color='darkorange', bins=30, alpha=1, label='mean')
     ax.axvline(x=0.5, color='black', linestyle='--', label='True mean', linewidth=3)
     ax.legend(loc='upper left')
-    fig.savefig('figs/mean_distr_unif.png', bbox_inches='tight')
+    fig.savefig('figs/mean_distr_unif.pdf', bbox_inches='tight')
 
     #plot the results ordering the intervals by increasing lower extreme of the CI
     unif_df.sort_values(by='mean_low', inplace=True)
@@ -81,12 +81,12 @@ def main():
     for lower, upper, y in zip(unif_df['mean_low'],unif_df['mean_up'], range(len(unif_df))):
         ax.plot((lower,upper), (y,y),'ro-',color='darkorange', alpha=0.5)
     ax.plot((lower,upper), (y,y),'ro-',color='darkorange', alpha=0.5, label='CI')
-    ax.plot(unif_df['mean'], range(len(unif_df)),'ro',color='teal', alpha=0.9, label = 'Mean')
+    ax.plot(unif_df['mean'], range(len(unif_df)),'ro',color='teal', alpha=0.9, label = 'mean')
     ax.axvline(x=0.5, color='black', linestyle='--', label='True mean', linewidth=3)
     ax.legend(loc='upper left')
     ax.set_yticklabels('')
-    ax.set_xlabel('Mean')
-    fig.savefig('figs/unif_mean_CI.png', bbox_inches='tight')
+    ax.set_xlabel('mean')
+    fig.savefig('figs/unif_mean_CI.pdf', bbox_inches='tight')
 
     # Generate n iid U(0,1) r.v.’s, and compute sample mean and sample variance
     print ('\nSimulation with n iid U(0,1) r.v.')
@@ -105,8 +105,6 @@ def main():
     ls='--'
     g=sns.lineplot(x='N', y='mean_accuracy', ax=ax, data=N_df_unif, marker='o', 
                     markersize=ms,linewidth=lw, linestyle=ls)
-
-    g.legend(loc='center left', bbox_to_anchor=(1, 0.5), borderaxespad=0.)
     ax.set_ylabel(r"Accuracy $\log_{10}(1/\epsilon)$")
     ax.set_xlabel(r"$N$")
     fig.savefig('figs/unif_mean_accuracy.pdf', bbox_inches='tight')
@@ -124,7 +122,7 @@ def main():
     ax.set_xlabel(r"$\sigma^2$")
     ax.set_ylabel('N')
     ax.set_xlim(0.02,0.145)
-    fig.savefig('figs/unif_variance_CI.png', bbox_inches='tight')
+    fig.savefig('figs/unif_variance_CI.pdf', bbox_inches='tight')
 
 
     # Find 95% prediction interval using theory and using bootstrap
@@ -160,11 +158,10 @@ def main():
 
     #distribution of the mean plot
     fig,ax=plt.subplots(figsize=(10,6))
-    sns.set_theme(style='white',palette='Dark2',font_scale=1.5)
-    sns.histplot(x='mean', data=norm_df, color='darkorange', bins=30, alpha=1, label='Mean')
+    sns.histplot(x='mean', data=norm_df, color='darkorange', bins=30, alpha=1, label='mean')
     ax.axvline(x=truemean, color='black', linestyle='--', label='True mean', linewidth=3)
     ax.legend(loc='upper left')
-    fig.savefig('figs/mean_distr_norm.png', bbox_inches='tight')
+    fig.savefig('figs/mean_distr_norm.pdf', bbox_inches='tight')
 
     #plot the results ordering the intervals by increasing lower extreme of the CI
     norm_df.sort_values(by='mean_low', inplace=True)
@@ -172,12 +169,12 @@ def main():
     for lower, upper, y in zip(norm_df['mean_low'],norm_df['mean_up'], range(len(norm_df))):
         ax.plot((lower,upper), (y,y),'ro-',color='darkorange', alpha=0.5)
     ax.plot((lower,upper), (y,y),'ro-',color='darkorange', alpha=0.5, label='CI')
-    ax.plot(norm_df['mean'], range(len(norm_df)),'ro',color='teal', alpha=0.9, label = 'Mean')
+    ax.plot(norm_df['mean'], range(len(norm_df)),'ro',color='teal', alpha=0.9, label = 'mean')
     ax.axvline(x=0, color='black', linestyle='--', label='True mean', linewidth=3)
     ax.legend(loc='upper left')
     ax.set_yticklabels('')
-    ax.set_xlabel('Mean')
-    fig.savefig('figs/norm_mean_CI.png', bbox_inches='tight')
+    ax.set_xlabel('mean')
+    fig.savefig('figs/norm_mean_CI.pdf', bbox_inches='tight')
 
     # Generate n iid N(0,1) r.v.’s, and compute sample mean and sample variance
     print ('\nSimulation with n iid N(0,1) r.v.')
@@ -194,8 +191,6 @@ def main():
     ls='--'
     g=sns.lineplot(x='N', y='mean_accuracy', ax=ax, data=N_df_norm, marker='o', 
                     markersize=ms,linewidth=lw, linestyle=ls)
-
-    g.legend(loc='center left', bbox_to_anchor=(1, 0.5), borderaxespad=0.)
     ax.set_ylabel(r"Accuracy $\log_{10}(1/\epsilon)$")
     ax.set_xlabel(r"$N$")
     fig.savefig('figs/norm_mean_accuracy.pdf', bbox_inches='tight')
@@ -210,12 +205,13 @@ def main():
     ax.plot((lower**2,upper**2), (y,y) ,color='darkorange', alpha=0.5, label='CI', linewidth=2)
     ax.plot(N_df_norm['std']**2, N_df_norm['N'],'ro',color='teal', label = 'STD', markersize=5)
     ax.legend(loc='upper left')
-    ax.set_xlabel(r"$\sigma**2$")
+    ax.set_xlabel(r"$\sigma^2$")
     ax.set_ylabel('N')
     ax.set_xlim(0.25,2)
-    fig.savefig('figs/norm_variance_CI.png', bbox_inches='tight')
+    fig.savefig('figs/norm_variance_CI.pdf', bbox_inches='tight')
 
-
+    # Find 95% prediction interval using theory and using bootstrap
+    print('\nFind 95% prediction interval using theory')
 
 if __name__ == "__main__":
     main()
