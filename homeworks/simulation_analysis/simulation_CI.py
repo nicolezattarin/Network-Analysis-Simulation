@@ -6,7 +6,7 @@ import seaborn as sns
 def stat_sim(N, distr, level=0.95, verbose=False):
     """
     This function generates N data and calculate the mean, the standard deviation and the
-    confidence interval of the mean.
+    confidence interval of mean and std
     """
     # Generate N iid RVs
     if distr == "unif":
@@ -16,16 +16,25 @@ def stat_sim(N, distr, level=0.95, verbose=False):
     
     # Calculate mean and standard deviation
     mean = np.mean(data)
-    std = np.std(data)
+    if distr == "unif":
+        std = np.sqrt((N-1)/N*np.std(data)**2)
+    elif distr == "norm":
+        std = np.std(data)
 
-    from scipy.stats import norm
-    # Calculate confidence interval
-    eta = np.abs(norm.ppf((1-level)/2))
+    from scipy.stats import norm 
+    from scipy.stats import t
+    # compute confidence interval
+    if distr == "unif":
+        # in the general case the confidence level is linked to normal distribution
+        eta = np.abs(norm.ppf((1-level)/2))
+    elif distr == "norm":
+        # in the norm case the confidence level is linked to student distribution
+        eta = np.abs(t.ppf((1-level)/2, df=N-1))
     
     mean_plus = mean+std/np.sqrt(N)*eta
     mean_minus = mean-std/np.sqrt(N)*eta
 
-    from scipy.stats import chi2
+    from scipy.stats import chi2 
     a = chi2.ppf((1-level)/2, N-1)
     b = chi2.ppf((1+level)/2, N-1)
     std_low = std*np.sqrt(a/(N-1))
@@ -36,6 +45,50 @@ def stat_sim(N, distr, level=0.95, verbose=False):
         print("The CI of the mean for level = {:.2f} is [{:.2f}, {:.2f}].".format(level, mean_minus, mean_plus))
         print("The CI of the std for level = {:.2f} is [{:.2f}, {:.2f}].".format(level, std_low, std_high))
     return mean, std, mean_minus, mean_plus, std_low, std_high
+
+def bootstrap_prediction_interval(data, level=0.95, r0=25):
+    """
+    returns the prediction interval for the mean or the std  with bootstrap
+    """
+
+    R = np.ceil(2*r0/(1-level))-1
+    stat = [] 
+    for r in range(1,R):
+        from random import choices
+        data_boot = choices(data, k=len(data))
+        stat.append(np.mean(data_boot))
+ 
+    stat = np.array(stat)
+    stat = np.sort(stat)
+    return stat[int(r0-1)], stat[int(R-r0)]
+
+def order_stat_prediction_interval(data, level=0.95):
+    ordered = np.sort(data)
+    alpha = 1-level
+    N = len(data)
+    if alpha < 2/(N-1): 
+        print("Warning: the confidence level is too low to calculate the prediction interval")
+        return None
+    low_index = np.floor(alpha*(N+1)/2.)
+    high_index = np.ceil((1-alpha/2.)*(N+1))
+    return ordered[low_index], ordered[high_index]
+
+def prediction_interval(data, distr, level=0.95, verbose=False, method="bootstrap"):
+    """
+    This function gets N data and calculate the mean, the standard deviation and the
+    prediction interval of the mean.
+    """
+    N = len(data)
+
+    # Calculate mean and standard deviation
+    mean = np.mean(data)
+
+    if method == "bootstrap":
+        mean_low, mean_high = bootstrap_prediction_interval(data, level=level, stat="mean")
+    elif method == "order_stat":
+        mean_low, mean_high = order_stat_prediction_interval(data, level=level)
+    return mean, mean_low, mean_high
+           
 
 def main():
 
@@ -180,7 +233,7 @@ def main():
     print ('\nSimulation with n iid N(0,1) r.v.')
     N_df_norm = pd.DataFrame(np.zeros(shape=(len(ns),7)), columns=["N", "mean", "std", "mean_low", "mean_up", "std_low", "std_up"] )
     for i in range(len(ns)):
-        np.random.seed(0)
+        np.random.seed(0) # set seed for reproducibility: we use the same initial values and add new ones
         N_df_norm.iloc[i,:]=np.concatenate([[ns[i]], stat_sim(N=ns[i], distr="norm")])
 
     # Study the accuracy of the estimate with respect to the true value vs. n
