@@ -63,6 +63,15 @@ def bootstrap_CI(data, level=0.95, r0=100):
     stat = np.sort(stat)
     return stat[int(r0-1)], stat[int(R-r0)]
 
+def bootstrap_PI(data, level=0.95, r0=100):
+    """
+    returns the confidence interval for the mean or the std  with bootstrap
+    """
+    stat = [] 
+    gap = (1-level)/2.
+    low , hight = np.quantile(data, [gap, gap+level])
+    return low, hight
+
 def order_stat_prediction_interval(data, level=0.95):
     ordered = np.sort(data)
     alpha = 1-level
@@ -85,7 +94,7 @@ def prediction_interval(data, level=0.95, verbose=False, method="bootstrap"):
     mean = np.mean(data)
 
     if method == "bootstrap":
-        mean_low, mean_high = bootstrap_CI(data, level=level)
+        mean_low, mean_high = bootstrap_PI(data, level=level)
     elif method == "order_stat":
         mean_low, mean_high = order_stat_prediction_interval(data, level=level)
     print("PI with {}: [{:.2f},{:.2f}]".format(method, mean_low, mean_high))
@@ -292,12 +301,13 @@ def main():
     m_boot, low_boot, high_boot = prediction_interval(data[:N], method="bootstrap")
     
     fig, ax = plt.subplots(figsize=(10,6))
-    g=sns.histplot(x=data, color='darkorange', bins=30, label='data', linewidth=0, alpha=0.5)
-    ax.axvline(x=m_stat, color='black', linestyle='solid', label='mean', linewidth=3)
-    ax.axvline(x=low_stat, color='teal', linestyle='dashed',label = 'order statistic', linewidth=3)
-    ax.axvline(x=high_stat, color='teal', linestyle='dashed', linewidth=3)
-    ax.axvline(x=low_boot, color='magenta', linestyle='dashed',label = 'bootstrap', linewidth=3)
-    ax.axvline(x=high_boot, color='magenta', linestyle='dashed',  linewidth=3)
+    lw=2
+    g=sns.histplot(x=data, color='darkorange', bins=30, label='data', linewidth=0, alpha=0.7)
+    ax.axvline(x=m_stat, color='black', linestyle='solid', label='mean', linewidth=lw)
+    ax.axvline(x=low_stat, color='teal', linestyle='dashed',label = 'order statistic', linewidth=lw)
+    ax.axvline(x=high_stat, color='teal', linestyle='dashed', linewidth=lw)
+    ax.axvline(x=low_boot, color='magenta', linestyle='dashed',label = 'bootstrap', linewidth=lw)
+    ax.axvline(x=high_boot, color='magenta', linestyle='dashed',  linewidth=lw)
 
     g.legend(loc='center left', bbox_to_anchor=(1, 0.5), borderaxespad=0.)
     ax.set_xlabel(r"Data")
