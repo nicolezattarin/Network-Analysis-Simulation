@@ -13,7 +13,6 @@ class random ():
         if seed is not None: self.seed = seed
         else: self.seed = 0
         
-
     def uniform (self, inf=0, sup=1,size=None, a=1103515245, b=12345, m=2**32):
         """
         Generate a random number between inf and sup
@@ -75,7 +74,7 @@ class random ():
                 rand += 1
                 trial = np.random.geometric(p)
                 n_trials += trial + 1 # all the failures + success
-            return rand-1
+            return rand
 
         def binomial_cdf (n,p):
             u = self.uniform(0,1)
@@ -84,10 +83,10 @@ class random ():
             F = pr
             rand = 0
             while u>=F:
-                rand += 1
                 pr += c*(n-rand)/(rand+1)*pr
                 F += pr
-            return rand
+                rand += 1
+            return rand -1
         
         if size == None or size == 1:
             rand = 0
@@ -110,6 +109,90 @@ class random ():
             else: rand = binomial_cdf(n,p)
 
         return rand
-                
-                            
+
+    def exp(self, lam=1, size=None):
+        """
+        Exponential distribution
+        args:
+            lam: lambda
+            size: number of random numbers to generate
+        """
+        if size == None or size == 1:
+            rand = -self.uniform(0,1)/lam
+        else :
+            size = int(size)
+            rand = np.zeros(size)
+            for i in range(size):
+                rand[i] = -np.log(self.uniform(0,1))/lam
+        return rand
+
+    def poisson (self, lam=0, size=None, method='exp'):
+        """
+        Poisson distribution
+        args:
+            lambda: parameter
+            size: number of random numbers to generate
+            method: 'cdf'
+                    'exp'
+                    'exp_opt'
+        """
+        m = method.lower()
+        if m != 'cdf' and m != 'exp' and m != 'exp_opt':
+            raise ValueError('method must be one of cdf, log, exp')
+        
+        def poisson_exp (lam):
+            t = -np.log(self.uniform(0,1))/lam
+            rand = 1
+            while t <= 1:
+                t += -np.log(self.uniform(0,1))/lam
+                rand += 1
+            return rand-1
+
+        def poisson_exp_opt (lam):
+            sup = np.exp(-lam)
+            rand = 1
+            prod = self.uniform(0,1)
+
+            while prod >= sup:
+                prod *= self.uniform(0,1)
+                rand += 1
+            return rand -1
+        
+        def poisson_cdf(lam):
+            u = self.uniform(0,1)
+            p = np.exp(-lam)
+            F = p
+            rand = 0
+            while u>=F:
+                p *= lam/(rand+1)
+                F += p
+                rand+=1
+            return rand-1
+ 
+        if m == 'exp':
+            if size == None or size == 1:
+                rand = poisson_exp(lam)
+            else :
+                size = int(size)
+                rand = np.zeros(size)
+                for i in range(size):
+                    rand[i] = poisson_exp(lam)
+        elif m == 'exp_opt':
+            if size == None or size == 1:
+                rand = poisson_exp_opt(lam)
+            else :
+                size = int(size)
+                rand = np.zeros(size)
+                for i in range(size):
+                    rand[i] = poisson_exp_opt(lam)
+        elif m == 'cdf':
+            if size == None or size == 1:
+                rand = poisson_cdf(lam)
+            else :
+                size = int(size)
+                rand = np.zeros(size)
+                for i in range(size):
+                    rand[i] = poisson_cdf(lam)
+        return rand
+
 
