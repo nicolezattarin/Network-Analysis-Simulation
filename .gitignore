@@ -6,7 +6,8 @@ __pycache__/
 # C extensions
 *.so
 #latex
-tex/*
+*aux
+*out
 
 #mac
 *.DS_Store
