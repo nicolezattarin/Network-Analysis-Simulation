@@ -8,6 +8,7 @@ __pycache__/
 #latex
 *aux
 *out
+*gz
 
 #mac
 *.DS_Store
