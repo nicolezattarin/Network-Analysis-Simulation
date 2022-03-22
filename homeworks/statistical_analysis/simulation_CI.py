@@ -199,12 +199,12 @@ def main():
     m_boot, low_boot, high_boot = prediction_interval(data[:N], method="bootstrap")
     
     fig, ax = plt.subplots(figsize=(10,6))
-    g=sns.histplot(x=data, color='darkorange', bins=30, label='data', linewidth=0, alpha=0.5)
-    ax.axvline(x=m_stat, color='black', linestyle='solid', label='mean', linewidth=3)
-    ax.axvline(x=low_stat, color='teal', linestyle='dashed',label = 'order statistic', linewidth=3)
-    ax.axvline(x=high_stat, color='teal', linestyle='dashed', linewidth=3)
-    ax.axvline(x=low_boot, color='magenta', linestyle='dashed',label = 'bootstrap', linewidth=3)
-    ax.axvline(x=high_boot, color='magenta', linestyle='dashed',  linewidth=3)
+    g=sns.histplot(x=data, color='darkorange', bins=30, label='data', linewidth=0, alpha=0.7)
+    ax.axvline(x=m_stat, color='black', linestyle='solid', label='mean', linewidth=2)
+    ax.axvline(x=low_stat, color='teal', linestyle='dashed',label = 'order statistic', linewidth=2)
+    ax.axvline(x=high_stat, color='teal', linestyle='dashed', linewidth=2)
+    ax.axvline(x=low_boot, color='magenta', linestyle='dashed',label = 'bootstrap', linewidth=2)
+    ax.axvline(x=high_boot, color='magenta', linestyle='dashed',  linewidth=2)
 
     g.legend(loc='center left', bbox_to_anchor=(1, 0.5), borderaxespad=0.)
     ax.set_xlabel(r"Data")

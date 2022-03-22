@@ -195,7 +195,23 @@ In Figure \ref{fig:N_unif} we show the accuracy of the mean, computed in log sca
   \caption{Accuracy of the mean, computed as $\log(1/\epsilon)$ where $\epsilon=|\mu_n-\mu_{real}|$, and the CI of the variance for different values of $n$}\label{fig:N_unif}
 \end{figure}
 
-Find 95\% prediction interval using theory
+\subsubsection{Prediction intervals}
+Finally, we generate a series of 1000 random numbers and we compute the corresponding prediction intervals with two methods: with bootstrap approximation and with the standard method based on order statistic. The first is based on computing the quantiles, given a certain confidence level, on the observed statistic, while the second relies on the assumption that data are iid. In particular, given a series of $n$ $iid$ data $\{X_i\}_{i=0,\dots,n}$, and its order statistic $\{X^n_{(i)}\}}_{i=0,\dots,n}$, prediction interval can be computed as follows:
+\begin{equation}
+\left[ X^n_{\lfloor(n+1)\alpha/2\rfloor}, X^n_{\lfloor(n+1)(1-\alpha/2)\rfloor}\right],
+\end{equation}
+where $\alpha$ must satisfy $\alpha \geq \frac{2}{n+1}$ and, fixed a level $\gamma$, it is computed as $\gamma=1-\alpha$. In Table \ref{tab:pi} we report results for the two different methods.
+
+
+\begin{table}[]\centering
+\begin{tabular}{lll}
+Distribution       & $PI $ Order statistic & $PI $ Bootstrap  \\ \hline
+$\mathcal U (0,1)$ & {[}0.02, 0.98{]}       & {[}0.03, 0.98{]}  \\
+$\mathcal N (0,1)$ & {[}-1.98, 1.96{]}      & {[}-1.97, 1.95{]}
+\end{tabular}\caption{CI computed with the standard method for $iid$ data, based on order statistic, and with bootstrap. We consider two datasets of 1000 elements, one with normal and one with uniform distribution. }\label{tab:pi}
+\end{table}
+
+
 
 \subsection{Normal distribution}
 Let us now consider $n$ iid data generated randomly and normally distributed with zero mean and unitary variance: $x_i\sim \mathcal N (0,1)$. We will repeat the analysis as in Section \ref{sec:unif}.
@@ -241,6 +257,41 @@ In Figure \ref{fig:N_norm} we report the accuracy of the mean and rhe CI of the 
 \end{figure}
 
 
+\subsubsection{Prediction intervals}
+Finally, we compute the prediction intervals with order statistic and bootstrap on a sample of 1000 $iid$ normally distributed data, the procedure is analogue to the one described in reference to uniform distributed data. Table \ref{tab:pi} report the PI for both the methods, which provide slightly different results.
+
+
+
+\section{Order statistic}
+Let us consider a dataset of $n$ $iid$ elements, uniformly distributed in $[0,1]$ and the corresponding ordered statistics, to whom we refer as:
+\begin{equation}
+X_{(1)}^n, \dots, X_{(n)}^n \quad \text{such that} \quad X_{(i)}^n< X_{(j)}^n\,\, \forall i<j.
+\end{equation}
+Let us consider first of all the general case in which data are distributed with a generic CDF $F(x)$, for a fixed value $x$ the probability that a certain data $X_{(j)}^n$ in the ordered sequence is smaller than $x$ is equal to the joint probability that $n − j$ elements are $> x$ and  $j$ are smaller., for all the possible combinations of  the last $n − j$ elements. Recalling that, fixed $x$, the probability of being smaller is given by the CDF $F_j(x= P(X_j\leq x))$ and the process "being smaller or larger than $x$" is binomial with probability $F(x)$, we can write the CDF of the order statistic as follows:
+\begin{equation}
+F_k^n (x)=\sum_{i=k}^{n}\binom{n}{i}(1-F(x))^{n-i}(F(x))^i.
+\end{equation}
+Going back to the uniform distribution case we have:
+\begin{equation}
+F_k^n (x)=\sum_{i=k}^{n}\binom{n}{i}(1-x)^{n-i}(x)^i.
+\end{equation}
+To retrieve the density function we just have to derive the previous equation, after manipulation we find:
+\begin{equation}
+f_k^n(x)= n\binom{n-1}{k-1}(1-x)^{n-k}x^{k-1}.
+\end{equation}
+The mean value is then computed as:
+\begin{equation}\begin{split}
+<X_{k}>=& n\binom{n-1}{k-1} \int_0^1(1-x)^{n-k}x^{k} \,\, dx \\
+=& - n\binom{n-1}{k-1} \sum_{i=0}^k \frac{(n-k)! k!}{(n-k+1+i)! (k-i)!}(1-x)^{n-k+1+i}x^{k-i}\Big|_{x=0}^{x=1},
+\end{split}\end{equation}
+where in the second equality we used a multiple integration by parts. Since for $x=1$ the only non null value is for $i=-n+k-1$ and for $x=0$ the only non null value is for $i=k$. Nevertheless, $i=-n+k-1$ does not correspond to a valid value for $i$ since it must be greater than 0 and lower than $k$, but  $i=-n+k-1>0 \Rightarrow k>n+1$, but by construction $k\geq n$. Therefore, we only consider $i=k$ for $x=0$, and obtain:
+\begin{equation}\begin{split}
+<X_{k}>=&n\binom{n-1}{k-1}  \frac{(n-k)! k!}{(n+1)! }\\
+=&\frac{n(n-1)! }{(n-k)! (k-1)!} \frac{(n-k)! k!}{(n+1)! }\\
+=& \frac{k}{n+1}
+\end{split}\end{equation}
+
 
 
 \end{document}
+
