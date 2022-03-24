@@ -222,9 +222,13 @@ class random ():
             sup = np.exp(-lam)
             rand = 1
             prod = self.uniform(0,1)
-
+            oldp = prod
             while prod >= sup:
+                # print('iter ', prod, sup)
                 prod *= self.uniform(0,1)
+                if prod < 1e-10: 
+                    prod = oldp
+                    continue
                 rand += 1
             if compute_time: t = time.time()-t0
             else: t = None
@@ -240,6 +244,7 @@ class random ():
                 p *= lam/(rand+1)
                 F += p
                 rand+=1
+                if p < 1e-10: break
             if compute_time: t = time.time()-t0
             else: t = None
             return rand, t
