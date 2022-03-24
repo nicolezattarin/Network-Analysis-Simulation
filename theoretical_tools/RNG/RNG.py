@@ -181,6 +181,7 @@ class random ():
             lam: lambda
             size: number of random numbers to generate
         """
+
         if size == None or size == 1:
             rand = -self.uniform(0,1)/lam
         else :
@@ -190,7 +191,7 @@ class random ():
                 rand[i] = -np.log(self.uniform(0,1))/lam
         return rand
 
-    def poisson (self, lam=0, size=None, method='exp'):
+    def poisson (self, lam=0, size=None, method='exp', compute_time=False):
         """
         Poisson distribution
         args:
@@ -199,20 +200,25 @@ class random ():
             method: 'cdf'
                     'exp'
                     'exp_opt'
+            compute_time: if True, return the time needed to generate the random numbers
         """
         m = method.lower()
         if m != 'cdf' and m != 'exp' and m != 'exp_opt':
             raise ValueError('method must be one of cdf, log, exp')
         
-        def poisson_exp (lam):
+        def poisson_exp (lam, compute_time=False):
+            if compute_time: t0 = time.time()
             t = -np.log(self.uniform(0,1))/lam
             rand = 1
             while t <= 1:
                 t += -np.log(self.uniform(0,1))/lam
                 rand += 1
-            return rand-1
+            if compute_time: t = time.time()-t0
+            else: t = None
+            return rand-1, t
 
-        def poisson_exp_opt (lam):
+        def poisson_exp_opt (lam, compute_time=False):
+            if compute_time: t0 = time.time()
             sup = np.exp(-lam)
             rand = 1
             prod = self.uniform(0,1)
@@ -220,9 +226,12 @@ class random ():
             while prod >= sup:
                 prod *= self.uniform(0,1)
                 rand += 1
-            return rand-1
+            if compute_time: t = time.time()-t0
+            else: t = None
+            return rand-1, t
         
         def poisson_cdf(lam):
+            if compute_time: t0 = time.time()
             u = self.uniform(0,1)
             rand = 0
             p = np.exp(-lam)
@@ -231,32 +240,42 @@ class random ():
                 p *= lam/(rand+1)
                 F += p
                 rand+=1
-            return rand
+            if compute_time: t = time.time()-t0
+            else: t = None
+            return rand, t
  
+        if size == None or size == 1:
+            rand = 0
+            size = 1
+        else :
+            size = int(size)
+            rand = np.zeros(size)
+            t = np.zeros(size)
+
         if m == 'exp':
-            if size == None or size == 1:
-                rand = poisson_exp(lam)
+            if size == 1:
+                rand, t = poisson_exp(lam)
             else :
                 size = int(size)
                 rand = np.zeros(size)
                 for i in range(size):
-                    rand[i] = poisson_exp(lam)
+                    rand[i], t[i] = poisson_exp(lam)
         elif m == 'exp_opt':
-            if size == None or size == 1:
-                rand = poisson_exp_opt(lam)
+            if size == 1:
+                rand, t = poisson_exp_opt(lam)
             else :
                 size = int(size)
                 rand = np.zeros(size)
                 for i in range(size):
-                    rand[i] = poisson_exp_opt(lam)
+                    rand[i], t[i] = poisson_exp_opt(lam)
         elif m == 'cdf':
-            if size == None or size == 1:
-                rand = poisson_cdf(lam)
+            if size == 1:
+                rand,t = poisson_cdf(lam)
             else :
                 size = int(size)
                 rand = np.zeros(size)
                 for i in range(size):
-                    rand[i] = poisson_cdf(lam)
-        return rand
+                    rand[i], t[i] = poisson_cdf(lam)
+        return rand, t
 
 
