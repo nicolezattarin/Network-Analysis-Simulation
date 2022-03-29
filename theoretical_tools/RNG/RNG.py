@@ -16,7 +16,7 @@ class random ():
         if seed is not None: self.seed = seed
         else: self.seed = 0
         
-    def uniform (self, inf=0, sup=1, size=None, a=1103515245, b=12345, m=2**32):
+    def uniform (self, inf=0, sup=1, size=None, a=1103515245, b=12345, m=2**32, method ='lcg'):
         """
         Generate a random number between inf and sup
         args:
@@ -26,7 +26,10 @@ class random ():
             a: multiplier
             b: increment
             m: modulus
+            method: method to generate the random numbers, can be 'wide' or 'lcg'
         """
+        if method != 'wide' and method != 'lcg':
+            raise ValueError('method must be wide or lcg')
         if size != None and size < 0:
             raise ValueError('size must be positive')
         if inf > sup:
@@ -37,14 +40,39 @@ class random ():
             self.seed = rand
             return rand
 
+        if method == 'wide':
+            rand = self._widespread(inf,sup,size,a,m,self.seed)
+            return rand
+        elif method == 'lcg':
+            if size == None or size == 1:
+                rand = inf + (sup-inf)*uniform(inf,sup,a,b,m)/m 
+            else :
+                size = int(size)
+                rand = np.zeros(size)
+                for i in range(size):
+                    rand[i] = inf + (sup-inf)*uniform(0,1,a,b,m)/m
+        return rand
+
+    def _widespread (self, inf=0, sup=1, size=1, a=16807 , m=2**31-1, seed=1):
+        def widespread (a, m, n):
+            from decimal import Decimal
+            import decimal
+            decimal.getcontext().prec=100000
+            rand = (Decimal(a**n)*Decimal(seed))%Decimal(m)/Decimal(m)
+            return rand
+            
         if size == None or size == 1:
-            rand = inf + (sup-inf)*uniform(inf,sup,a,b,m)/m 
-        else :
+            nit=1
+            rand = inf + (sup-inf)*widespread(a,m,seed,nit)
+        else:
             size = int(size)
+            nit = 0
             rand = np.zeros(size)
             for i in range(size):
-                rand[i] = inf + (sup-inf)*uniform(0,1,a,b,m)/m
+                rand[i] = inf + (sup-inf)*widespread(a,m,nit)
+                nit+=1
         return rand
+    
 
     def geometric (self, p, size=None):
         """
@@ -152,7 +180,7 @@ class random ():
         if size == None or size == 1:
             rand = 0
             size = 1
-        else :
+        else:
             size = int(size)
             rand = np.zeros(size)
             t = np.zeros(size)

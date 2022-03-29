@@ -53,7 +53,7 @@
 \maketitle
 
 \begin{abstract}
-Every simulation must be supported with a rigorous data analysis, in order to draw significant information about the obtained results. As a consequence, being able to study in a proper and theoretically way the statistical properties of a dataset is a fundamental skill required for scientific simulation and study. This report first explores different tools and then test them on two simple simulations of iid data.
+In order to draw significant information about the obtained results, every simulation must be supported with a rigorous data analysis. Therefore, being able to study in a proper and theoretically rigorous way the statistical properties of a dataset is a fundamental skill required for scientific simulation. This report first explores different tools and then test them on two simple simulations of randomly generated  data.
 \end{abstract}
 
 
@@ -62,7 +62,7 @@ Every simulation must be supported with a rigorous data analysis, in order to dr
 
 \subsection{Display distributions}
 
-Let us consider the example of two operating systems: an older one and its new version, whose performances are supposed to be better. We want to explore different visualization and statistical tools that allow to compare the two performances. To this end, we are going to deal with data regarding the execution times of a series of commonly used programs with both options.
+Let us consider the example of two operating systems: an older one and its new version, whose performances are supposed to be better. We want to explore different visualization and statistical tools that allow to compare performances. To this end, we are going to deal with data regarding the execution times of a series of commonly used programs with both options.
 
 \begin{figure}\centering
 \includegraphics[width=0.8\textwidth]{../figs/extimes_distributions_vs_scatter.pdf}
@@ -71,7 +71,7 @@ Let us consider the example of two operating systems: an older one and its new v
 
 
  \par
-In Figure \ref{fig:distribution_scatter} we report both the distributions and the individual data for each of the two versions. It is possible to highlight that the histograms provide informations regarding the statistical distributions of data, while scatterplots allow us only to individuate a qualitative trend in the observed data. Therefore, a more quantitative way to extrapolate information from the data is needed. A good option consist of comparing the cumulative density functions of the two distributions, in Figure \ref{fig:cdf} we report the CDF for both the versions of the operating system. Since the CDF corresponding to the run times of the new systems is almost constantly above the other one, we can conclude that the new approach is better performing than the previous one.Finally, it may be useful to compare two distributions by means of boxplots, swarmplots and violinplots, in Figure \ref{fig:boxswarm} we provide both boxplots and swarmplots of each of the two distributions. Such tools are particularly useful to represent quantiles and, for what concerns violinplots and swarmplots, a qualitative shape of the distribution.
+In Figure \ref{fig:distribution_scatter} we report both the distributions and the individual data for each of the two versions. It is possible to highlight that the histograms provide informations regarding the statistical distributions of data, while scatterplots allow us only to individuate a qualitative trend in the observed data. Therefore, a more quantitative way to extrapolate information is needed. A good option consist of comparing the cumulative density functions of the two distributions, in Figure \ref{fig:cdf} we report the CDF for both the versions of the operating system. Since the CDF corresponding to the run times of the new systems is almost constantly above the other one, we can conclude that the new approach is better performing than the previous one.\\Finally, it may be useful to compare two distributions by means of boxplots, swarmplots and violinplots, in Figure \ref{fig:boxswarm} we provide both boxplots and swarmplots of each of the two distributions. Such tools are particularly useful to represent quantiles and, for what concerns violinplots and swarmplots, a qualitative shape of the distribution.
 
 
 \begin{figure}\centering
@@ -94,7 +94,7 @@ Moreover, we could be interested in comparing the two versions by defining a qua
 \caption{Different visualizations of the reduction times in ms from the older to the more recent version of the operating system. Right panel shows the scatterplot relative to individual data, while right panel shows the distribution. The central plot shows the quantile and the mean (horizontal line), with its confidence interval (dashed lines).}\label{fig:reduction}
 \end{figure}
 
-Nevertheless, is worth to highlight that from the theory provides different methods to compute confidence intervals for the mean. We already exploited the standard one to compute the CI of the run time reductions, but two more approaches can be investigated: one relies on the assumption that data are normally distributed, while the second is known as bootstrap method. In Figure \ref{fig:ci_methods} we show mean CI for all the methods proposed, both for the new and the old system.
+Nevertheless, it is worth to highlight that the theory provides different methods to compute confidence intervals for the mean. We already exploited the standard one to compute the CI of the run time reductions, but two more approaches can be investigated: one relies on the assumption that data are normally distributed, while the second is known as bootstrap method. In Figure \ref{fig:ci_methods} we show mean CI for all the methods proposed, both for the new and the old system.
 All computations are carried out assuming a confidence level of 0.95.
 
 \begin{figure} \centering
@@ -109,9 +109,9 @@ All computations are carried out assuming a confidence level of 0.95.
 
 \section{Time series:the example of daily balance data}
 Let us consider an example of time series, in order to explore some useful tools.
-We consider data coming from a shop: at the end of day $t-1$, the amount of cash in the cash register is $c_{t-1}$, employees count it and puts it into the safe. The next day, $c_{t-1}$ is returned to the cash register, at the end of the day $c_t$ is equal to $c_{t-1}$, plus the profit of the day $s_t$, minus the amount of cash sent to the bank $b_t$, thus we have $c_t=c_{t-1}+s_t-b_t$. In practice this is subjected to error, we study the daily evolution of such error, to whom we refer as daily balance, $Y=c_t-c_{t-1}-s_t+b_t$.
+We consider data coming from a shop: at the end of day $t-1$ the amount of cash in the register is $c_{t-1}$, employees count it and puts it into the safe. The next day, $c_{t-1}$ is returned to the cash register, thus at the end of the day $c_t$ is equal to $c_{t-1}$, plus the profit of the day $s_t$, minus the amount of cash sent to the bank $b_t$. Therefore, we get $c_t=c_{t-1}+s_t-b_t$. Nevertheless, in practice this is subjected to error, we study the daily evolution of such error, to whom we refer as daily balance, $Y=c_t-c_{t-1}-s_t+b_t$.
 
-To observe the qualitative trend of data, in Figure \ref{fig:lineplot_joe} we exhibit the time evolution of the balance. Nevertheless, it is not possible to discriminate if the dataset is consists of iid items or not just from the time evolution. To such end we can indeed use log plots, which are scatterplots of the data at time $t$ versus the shifted data at time $t+h$, for different values of $h$. In Figure \ref{fig:joe_lag_plots} we exhibit log plots for different values of $h$: it is clear that there is a strong correlation with the previous day, even tough correlations decrease as we consider higher values of h, i.e. larger time shifts. Finally, another interesting approach to individuate correlations in a time serie is to study the autocorrelation plot: it provides the correlation coefficient between $y(t)$ and $y(t+h)$ for different shifts.
+To observe the qualitative trend of data, in Figure \ref{fig:lineplot_joe} we exhibit the time evolution of balance. Even though, it is worth to highlight that it is not possible to discriminate if the dataset consists of $iid$ items just having a look at time evolution. Since we are interested in studying if the balance of a certain day depends on the previous days, we consider log plots, which are scatterplots of the data at time $t$ versus the shifted data at time $t+h$, for different values of $h$. In Figure \ref{fig:joe_lag_plots} we exhibit log plots for different values of $h$: it is clear that there is a strong correlation with the previous day, even tough correlations decrease as we consider higher values of h, i.e. larger time shifts. Finally, another interesting approach to individuate correlations in a time serie is to study the autocorrelation plot: it provides the correlation coefficient between $y(t)$ and $y(t+h)$ for different shifts. 
 
 \begin{figure} \centering
 \includegraphics[width=1\textwidth]{../figs/joe_lag_plots.pdf}
@@ -129,7 +129,7 @@ To observe the qualitative trend of data, in Figure \ref{fig:lineplot_joe} we ex
 In this section we perform a simulation, by means of Python Random Number Generators (RNG), to study the statistical properties of two distributions, uniform and normal, with particular reference to the computation of confidence intervals.
 
 \subsection{Uniform distribution}\label{sec:unif}
-Let us consider $n$ iid data generated randomly and uniformly distributed: $x_i\sim \mathcal U ([0,1])$. We aim to study the statistical properties of such distribution for different values of $n$, in order to exploit and test different metrics and tools.
+Let us consider $n$ iid data generated randomly and uniformly distributed: $x_i\sim \mathcal U ([0,1]), \,\, i = 0, \dots,N-1$. We aim to study the statistical properties of such distribution for different values of $n$, in order to exploit and test different metrics and tools.
 
 \subsubsection{Simulation with n=48}
 Let us first generate $n=48$ $iid$ $x_i\sim \mathcal U ([0,1])$, we can compute sample mean, sample standard deviation and 95\%-confidence interval for the mean as follows:
@@ -163,7 +163,7 @@ $\mathcal N (0,1)$ & 0.18    & 1.12       & {[}-0.14, 0.51{]}
 \end{table}
 
 \subsubsection{Repetition of the experiment 1000 times}
-We now repeat the same experiments, i.e. generation of 48 samples, independently 1000 times. We then compute the probability that the true value of the mean does is not contained in the CI of the mean. Over 1000 trials, we observe that this event happens with 6\% probability, which is close to the 5\% we sould expect since we fixed a confidence level of 95\%.
+We now repeat the same experiments, i.e. generation of 48 samples, independently 1000 times. We then compute the probability that the true value of the mean is not contained in the CI. Over 1000 trials, we observe that this event happens with 6\% probability, which is close to the 5\% we would expect since we fixed a confidence level of 95\%.
 In Figure\ref{fig:mean_unif} we plot the distribution of the observed means, compared with the true mean, dashed line, while in Figure \ref{fig:meanci_unif} we plot the CI with the corresponding mean. From the latter, we can compare the true mean with the computed mean, in ascending order, and highlight when it falls into the computed CI.
 
 \begin{figure} \centering
@@ -179,8 +179,8 @@ In Figure\ref{fig:mean_unif} we plot the distribution of the observed means, com
 \end{figure}
 
 \subsubsection{Comparison of results for different values of $n$}
-Another interesting analysis consists of testing such statistical tools on a dataset of different sizes. In particular we generate $n$ $iid$ datasets uniformly distributed in $[0,1]$ and for different values of $n$ we compute the mean and the sample variance. Note that to generate random numbers we need to fix a seed for the pseudo RNGs, and we choose to do so in such a way that each dataset is made up by the same initial values and new data generated according to the new size of the set. This is due to the fact that we want to compare how the metrics are influenced by the size of the datasets, thus we need to work on the same data.\par
-In Figure \ref{fig:N_unif} we show the accuracy of the mean, computed in log scale, and the CI of the variance for different values of $n$. For what concerns the comparison of the sample mean with the real value, in Figure \ref{fig:N_unif_acc} we observe that the accuracy of the mean is subjected to oscillation, with a general increasing trend, as $n$ increases, in particular it gets more stable for high values of $n$. On the other hand, in Figure \ref{fig:N_unif_var} we show the variance and its CI for different values of $n$. The main outcome is that as we increase the size of the dataset, our uncertainty on the estimate of the variance decreases.
+Another interesting analysis consists of testing such statistical tools on a dataset of different sizes. In particular we generate $n$ $iid$ elements uniformly distributed in $[0,1]$ and for different values of $n$, we then compute the mean and the sample variance. Note that, in order to generate random numbers, we need to fix a seed for the pseudo RNGs, and we choose to do so in such a way that each dataset is made up by the same initial values and new data generated according to the new size of the set. This is due to the fact that we want to compare how the metrics are influenced by the size of the datasets, thus we decide to work with at least the same initial part of data.\par
+In Figure \ref{fig:N_unif} we show the accuracy of the mean, computed as logarithm of the inverse $\epsilon=\mu_{data}-\mu_{real}$, and the CI of the variance for different values of $n$. For what concerns the comparison of the sample mean with the real value, in Figure \ref{fig:N_unif_acc} we observe that the accuracy of the mean is subjected to oscillation, with a general increasing trend as $n$ increases. In particular it gets more stable for high values of $n$. On the other hand, in Figure \ref{fig:N_unif_var} we show the variance and its CI for different values of $n$. The main outcome is that, as we increase the size of the dataset, our uncertainty on the estimate of the variance decreases.
 
 \begin{figure} \centering
 \begin{subfigure}{0.45\textwidth}
@@ -223,8 +223,8 @@ We first consider a dataset of 48 elements and compute sample mean, standard dev
 \subsubsection{Repetition of the experiment 1000 times}
 We then generate 1000 independent dataset, each of which is composed by 48 elements. 
 
-The probability that the true value of the mean does is not contained in the CI of the mean is 6\%, while we would expect 5\% since we fixed a confidence level of 95\%. This is probably due to approximations introduced in the simulation itself and by the randomness of the system.
-In Figure\ref{fig:mean_norm} we plot the distribution of the observed means and the corresponding true value, while in Figure \ref{fig:meanci_norm} we exhibit the CI and all the sample means. The latter allows to compare the true mean with the computed mean and to observe when the true value falls into the simulation CI.
+The probability that the true value of the mean does is not contained in the CI is 6\%, while we would expect 5\% since we fixed a confidence level of 95\%. This is probably due to approximations introduced in the simulation itself and by the randomness of the system.
+In Figure \ref{fig:mean_norm} we plot the distribution of the observed means and the corresponding true value, while in Figure \ref{fig:meanci_norm} we exhibit the CI and all the sample means. The latter allows to compare the true mean with the computed mean and to observe when the true value falls into the simulation CI.
 
 \begin{figure} \centering
 \begin{subfigure}{0.5\textwidth}
@@ -241,7 +241,7 @@ In Figure\ref{fig:mean_norm} we plot the distribution of the observed means and 
 \subsubsection{Comparison of results for different values of $n$}
 Eventually, we can generate datasets of different sizes, with the same structured exposed in Section \ref{sec:unif}.  
 
-In Figure \ref{fig:N_norm} we report the accuracy of the mean and rhe CI of the variance for different dataset sizes. The accuracy, see Figure \ref{fig:N_norm_acc}, has an irregular increasing behaviour for $n<400$, while it gets stable and for larger datasets. Figure \ref{fig:N_norm_var} shows the variance and its CI, the main outcome is uncertainty on the estimate of the variance decreases for larger values of $n$.
+In Figure \ref{fig:N_norm} we report the accuracy of the mean and rhe CI of the variance for different dataset sizes. The accuracy, see Figure \ref{fig:N_norm_acc}, has an irregular increasing behaviour for $n<400$, while it gets stable for larger datasets. Figure \ref{fig:N_norm_var} shows the variance and its CI, the main outcome is uncertainty on the estimate of the variance decreases for larger values of $n$.
 
 \begin{figure} \centering
 \begin{subfigure}{0.45\textwidth}
@@ -267,15 +267,15 @@ Let us consider a dataset of $n$ $iid$ elements, uniformly distributed in $[0,1]
 \begin{equation}
 X_{(1)}^n, \dots, X_{(n)}^n \quad \text{such that} \quad X_{(i)}^n< X_{(j)}^n\,\, \forall i<j.
 \end{equation}
-Let us consider first of all the general case in which data are distributed with a generic CDF $F(x)$, for a fixed value $x$ the probability that a certain data $X_{(j)}^n$ in the ordered sequence is smaller than $x$ is equal to the joint probability that $n − j$ elements are $> x$ and  $j$ are smaller., for all the possible combinations of  the last $n − j$ elements. Recalling that, fixed $x$, the probability of being smaller is given by the CDF $F_j(x= P(X_j\leq x))$ and the process "being smaller or larger than $x$" is binomial with probability $F(x)$, we can write the CDF of the order statistic as follows:
+Let us consider first of all the general case in which data are distributed with a generic CDF $F(x)$, for a fixed value $x$ the probability that a certain data $X_{(j)}^n$ in the ordered sequence is smaller than $x$ is equal to the joint probability that $n- j$ elements are $> x$ and  $j$ are smaller. This has to be considered for all  for all the possible combinations of  the last $n - j$ elements. Recalling that, fixed $x$, the probability of being smaller is given by the CDF $F_j(x)= P(X_j\leq x))$ and the process "being smaller or larger than $x$" is binomial with probability $F(x)$, we can write the CDF of the order statistic as follows:
 \begin{equation}
 F_k^n (x)=\sum_{i=k}^{n}\binom{n}{i}(1-F(x))^{n-i}(F(x))^i.
 \end{equation}
-Going back to the uniform distribution case we have:
+Going back to the uniform distribution, for which $F(x)=x$, we have:
 \begin{equation}
 F_k^n (x)=\sum_{i=k}^{n}\binom{n}{i}(1-x)^{n-i}(x)^i.
 \end{equation}
-To retrieve the density function we just have to derive the previous equation, after manipulation we find:
+To retrieve the density function we just derive the previous equation, after manipulation we find:
 \begin{equation}
 f_k^n(x)= n\binom{n-1}{k-1}(1-x)^{n-k}x^{k-1}.
 \end{equation}
