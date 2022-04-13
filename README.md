@@ -7,4 +7,4 @@ The first part of the course is focus on providing basic statistical and analyti
 ## Overview 
 ### Mathematical and analytical tools:
 1. Statistical analysis: in [statistical_analysis](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/theoretical_tools/statistical_analysis) we explore the use of basic tools (e.g. confidence intervals, correlations, data visualization), testing both a data samples from a uniform and a normal distribution;
-2. Random number generators
+2. Random number generators: in [RNG](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/theoretical_tools/RNG) we pèrovide a class for the generation of random numbers (uniform, exponential, geometric, binomial, poisson) and we explore the use and limitations of these generators;
