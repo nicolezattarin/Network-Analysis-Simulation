@@ -11,7 +11,7 @@ The first part of the course is focus on providing basic statistical and analyti
 An example of analysis follows. Consider a sequence of 1000 data, each of which is composed by 48 elements uniformly distributed in [0, 1]. The following figure shows CI and corresponding sample mean, computed on of 48 items, compared with the true mean, represented by the 1000 datasets of 48 elements. The vertical dashed line vertical dashed line represents the real mean, and it shows how many times it falls into the computed CI.
 
 <p align="center">
-  <img src="theoretical_tools/statistical_analysis/figs/unif_mean_CI.png" width="400" /></p>
+  <img src="/theoretical_tools/statistical_analysis/figs/unif_mean_CI.png" width="400" /></p>
 
 
 
