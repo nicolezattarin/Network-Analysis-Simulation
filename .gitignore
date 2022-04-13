@@ -9,7 +9,8 @@ __pycache__/
 *aux
 *out
 *gz
-
+#test
+*test.ipynb
 #mac
 *.DS_Store
 # Distribution / packaging
