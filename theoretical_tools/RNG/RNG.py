@@ -60,7 +60,7 @@ class random ():
             decimal.getcontext().prec=100000
             rand = (Decimal(a**n)*Decimal(seed))%Decimal(m)/Decimal(m)
             return rand
-            
+        if self.seed == 0: raise ValueError("seed cannot be 0")
         if size == None or size == 1:
             nit=1
             rand = inf + (sup-inf)*widespread(a,m,seed,nit)
@@ -72,7 +72,7 @@ class random ():
                 rand[i] = inf + (sup-inf)*widespread(a,m,nit)
                 nit+=1
         return rand
-    
+
 
     def geometric (self, p, size=None):
         """
@@ -120,7 +120,6 @@ class random ():
             raise ValueError('method must be one of cdf, geometric, poisson')
         
         def binomial_uniform (n,p, compute_time=False):
-
             if compute_time: t0 = time.time()
             test = self.uniform(0,1, size=n)
             prob = np.ones(n)*p
@@ -158,24 +157,21 @@ class random ():
                     F += pr
                     rand += 1
                     if pr < 1e-10: break
-                if compute_time: t = time.time()-t0
-                else: t = None
-                return rand, t
             else:
                 u = self.uniform(0,1)
                 pr = p**n # probability of zero failures
                 F = 1 # CDF for zero failures
                 rand = n # start from k=n
-                while u<=F:
+                while u<F:
                     # print('iter ', u, F, pr, rand)
                     pr *= rand/(n-rand+1)/coef
                     F -= pr
                     rand -= 1
                     if rand == 0: break
                     if pr < 1e-10: break
-                if compute_time: t = time.time()-t0
-                else: t = None
-                return rand, t
+            if compute_time: t = time.time()-t0
+            else: t = None
+            return rand, t
 
         if size == None or size == 1:
             rand = 0
@@ -254,15 +250,12 @@ class random ():
             while prod >= sup:
                 # print('iter ', prod, sup)
                 prod *= self.uniform(0,1)
-                if prod < 1e-10: 
-                    prod = oldp
-                    continue
                 rand += 1
             if compute_time: t = time.time()-t0
             else: t = None
             return rand-1, t
         
-        def poisson_cdf(lam):
+        def poisson_cdf(lam, compute_time=False):
             if compute_time: t0 = time.time()
             u = self.uniform(0,1)
             rand = 0
@@ -287,28 +280,28 @@ class random ():
 
         if m == 'exp':
             if size == 1:
-                rand, t = poisson_exp(lam)
+                rand, t = poisson_exp(lam, compute_time)
             else :
                 size = int(size)
                 rand = np.zeros(size)
                 for i in range(size):
-                    rand[i], t[i] = poisson_exp(lam)
+                    rand[i], t[i] = poisson_exp(lam, compute_time)
         elif m == 'exp_opt':
             if size == 1:
-                rand, t = poisson_exp_opt(lam)
+                rand, t = poisson_exp_opt(lam, compute_time)
             else :
                 size = int(size)
                 rand = np.zeros(size)
                 for i in range(size):
-                    rand[i], t[i] = poisson_exp_opt(lam)
+                    rand[i], t[i] = poisson_exp_opt(lam, compute_time)
         elif m == 'cdf':
             if size == 1:
-                rand,t = poisson_cdf(lam)
+                rand,t = poisson_cdf(lam, compute_time)
             else :
                 size = int(size)
                 rand = np.zeros(size)
                 for i in range(size):
-                    rand[i], t[i] = poisson_cdf(lam)
+                    rand[i], t[i] = poisson_cdf(lam, compute_time)
         return rand, t
 
 
