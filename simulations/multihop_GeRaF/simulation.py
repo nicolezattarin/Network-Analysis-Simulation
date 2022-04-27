@@ -7,7 +7,7 @@ from multihop import*
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--distance', type=int, default=5)
-parser.add_argument('--N', type=int, default=10)
+parser.add_argument('--N', type=int, default=100)
 parser.add_argument('--density', type=int, default=10)
 
 def main(distance, N, density):
