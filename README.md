@@ -19,3 +19,16 @@ An example of analysis follows. Consider a sequence of 1000 data, each of which 
 
 <p align="center">
   <img src="/theoretical_tools/RNG/results/binomial_time_unif_cdf.png" width="800" /></p>
+
+### Simulation strategies
+1. Geographic Random Forwarding (GeRaF) for Ad Hoc and Sensor Networks: Multihop Performance [1][2].
+In [multihop_GeRaF](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/simulations/multihop_GeRaF)  section we present a simple implementation of the GeRaF algorithm for the simulation of Ad Hoc and Sensor networks. The algorithm is based on the [1] and [2]. The proposed idea is a forwarding technique based on geographical location of the nodes involved and random selection of the relaying node via contention among receivers. 
+The figure below shows the performances of GeRaF compared with GAF [3]: 
+
+<p align="center">
+  <img src="simulations/multihop_GeRaF/figures/multihop_GeRaF_N100_distance5.png" width="800" /></p>
+
+References:
+[1] M. Zorzi, R.R. Rao, “Geographic Random Forwarding (GeRaF) for ad hoc and sensor networks: multihop performance,” in IEEE Trans. on Mobile Computing, vol. 2, n. 4, Oct.-Dec. 2003.
+[2] M. Zorzi, R.R. Rao, “Geographic Random Forwarding (GeRaF) for ad hoc and sensor networks: energy and latency performance,” in IEEE Trans. on Mobile Computing, vol. 2, n. 4, Oct.-Dec. 2003.
+[3] Y. Xu, J. Heidemann, and D. Estrin, “Geography-Informed Energy Conservation for Ad Hoc Routing,” Proc. Seventh Ann. Int’l Conf. Mobile Computing and Networking, July 2001.
