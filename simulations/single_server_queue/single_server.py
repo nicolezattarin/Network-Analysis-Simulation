@@ -6,7 +6,8 @@ def queue (dep_prob,
             two_arr_prob, 
             maxtime=10000, 
             service_time='unitary', 
-            verbose=True):
+            verbose=True,
+            buffer_size=int(1e8)):
     """
     Simulates a queue with a single server.
     Parameters
@@ -25,6 +26,8 @@ def queue (dep_prob,
         Service time of the server.
     verbose: bool
         If True, prints the results.
+    buffer_size: int
+        Size of the buffer, i.e. the maximum number of users in the system.
 
     Returns
     -------
@@ -33,6 +36,10 @@ def queue (dep_prob,
     """
     t, n_system, n_arrivals, n_departures = 0,0,0,0 # t count the slot
     cum_n_system = 0
+    history_state = []
+    none = 0
+    ntwo = 0
+    n_dropped = 0 #dropped because of buffer overflow
 
     if dep_prob < 0 or dep_prob > 1: raise ValueError("dep_prob must be between 0 and 1")
     if one_arr_prob < 0 or one_arr_prob > 1: raise ValueError("one_arr_prob must be between 0 and 1")
@@ -45,9 +52,6 @@ def queue (dep_prob,
             format(dep_prob, zero_arr_prob, one_arr_prob, two_arr_prob))
 
     # we consider a slotted time and simulate what happens in the slot
-    history_state = []
-    none = 0
-    ntwo = 0
     # geometric service time
     if service_time == 'geometric':
         st = np.random.geometric(dep_prob)
@@ -73,11 +77,21 @@ def queue (dep_prob,
                     service_times.append(1)
         u = np.random.uniform()
         if u < one_arr_prob:
+            if n_system == buffer_size:
+                n_dropped+=1
+                history_state.append(n_system)
+                t+=1
+                continue
             n_arrivals+=1
             n_system+=1
             none += 1
             arrival_times.append(1) #time is unitary so we don't divide by 1
         elif one_arr_prob<u and u<one_arr_prob+two_arr_prob:
+            if n_system == buffer_size:
+                n_dropped+=2
+                history_state.append(n_system)
+                t+=1
+                continue
             n_arrivals+=2
             n_system+=2
             ntwo += 1
@@ -92,9 +106,11 @@ def queue (dep_prob,
     avg_delay = cum_n_system/n_departures #average delay
     avg_occupancy = cum_n_system/maxtime
 
+    total_arrivals = np.sum(arrival_times)
     avg_arrival_rate = np.mean(arrival_times)
     avg_service_time = 1/np.mean(service_times)
     rho = avg_arrival_rate/avg_service_time
+    overflow_prob = n_dropped/total_arrivals
     # DEBUG
     if verbose:
         print('\np one arrival: {}'.format(none/maxtime))
@@ -105,6 +121,7 @@ def queue (dep_prob,
         print('avg_service_time: {}'.format(avg_service_time))
         print ("expected average service time:", 1/dep_prob)
         print('rho: {}'.format(rho))
+        print ('overflow_prob: {}'.format(overflow_prob))
 
     result = {'avg_throughput': avg_throughput,
                 'avg_delay': avg_delay,
@@ -112,5 +129,6 @@ def queue (dep_prob,
                 'avg_arrival_rate': avg_arrival_rate,
                 'avg_service_time': avg_service_time,
                 'rho': rho,
-                'history_state': history_state}
+                'history_state': history_state,
+                'overflow_prob': overflow_prob,}
     return result

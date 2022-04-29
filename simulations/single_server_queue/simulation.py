@@ -60,7 +60,7 @@ def main ():
 
 
     ###############################################################################
-    #                         GEOMETRIC SERVICE TIME                           #
+    #                         GEOMETRIC SERVICE TIME                              #
     ###############################################################################
     print ("\n\nGEOMETRIC SERVICE TIME ")
     # P[1 arrival]=1-P[0 arrivals]=0.5, service time for each arrival is a geometric number of slots with mean 1/b. 
