@@ -38,7 +38,7 @@ In this section we present NS3 network simulations, in particular, each folder c
 
 2. Simple p2p-csma BUS protocol: in [bus](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/bus) we present a simple implementation of a bus with a 2p2 link and a variable number of csma, the network structure follows:
 <p align="center">
-  <img src="bus/scheme.jpeg" width="400" /></p>
+  <img src="bus/scheme.jpeg" width="500" /></p>
 
 **References:**
 
