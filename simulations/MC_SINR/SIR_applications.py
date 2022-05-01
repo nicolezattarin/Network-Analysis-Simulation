@@ -101,14 +101,16 @@ def multi_access(r0, R, SIR_threshold, G, sigma, eta=4, maxiter=1000, verbose=Tr
     for t in range(maxiter):
         # k, number of interferes, is poisson with param lambda pi R^2
         k = np.random.poisson(G)
+        if k == 0: 
+            successes += 1 #if no interferers, we are successful by definition
+            continue
         # for all k points we generate xi gaussian wirth mean 0 and variance sigma, Ri exponential with unit mean
         # ri is the distance from the transmitter to the interferer, thus uniform in [0, R]
         xi = np.array([np.random.normal(0, sigma) for i in range(k)])
         RR = np.array([np.random.exponential(1) for i in range(k)])
         r = np.array([R*np.random.uniform()**0.5 for i in range(k)])
-
         checkvar = np.max(RR**2*np.exp(xi)*r**(-eta))/(np.sum(RR**2*np.exp(xi)*r**(-eta)))
-        if checkvar > SIR_threshold: successes += 1
+        if checkvar > SIR_threshold/(1+SIR_threshold): successes += 1
         if verbose and t%100==0: 
             print(" iter {:.2f}, k {:.2f}, checkvar {:.2f}, threshold {:.2f}, successes {:.2f}"\
                 .format(t, k, checkvar, SIR_threshold, successes))
@@ -120,4 +122,4 @@ def multi_access(r0, R, SIR_threshold, G, sigma, eta=4, maxiter=1000, verbose=Tr
 
     r = {'successes': successes, 'failures': maxiter-successes, 
         'success_prob': successes/maxiter, 'failure_prob': (maxiter-successes)/maxiter}
-    return 
+    return r
