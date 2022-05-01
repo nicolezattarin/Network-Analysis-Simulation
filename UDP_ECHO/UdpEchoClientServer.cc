@@ -15,7 +15,7 @@ using namespace ns3;
 // console message logging by reference to the name
 NS_LOG_COMPONENT_DEFINE ("log_example");
 
-int main (int argc, char *argv)
+int main (int argc, char *argv[])
 {
   CommandLine cmd;
   cmd.Parse (argc, argv);
@@ -26,6 +26,7 @@ int main (int argc, char *argv)
   LogComponentEnable ("UdpEchoClientApplication", LOG_LEVEL_INFO);
   LogComponentEnable ("UdpEchoServerApplication", LOG_LEVEL_INFO);
 
+  NS_LOG_INFO ("Creating Topology"); //INFO: log message with severity level of info
   // TOPOLOGY
   // create nodes o --- o
   NodeContainer nodes;
@@ -35,9 +36,9 @@ int main (int argc, char *argv)
   PointToPointHelper pointToPoint; //helpers are used to 
   pointToPoint.SetDeviceAttribute ("DataRate", StringValue ("5Mbps"));
   pointToPoint.SetChannelAttribute ("Delay", StringValue ("2ms"));
+  pointToPoint.EnablePcapAll ("udp-echo-p2p");// enable pcap tracing on all devices
 
   //install on a net device
-
   // We create two PointToPointNetDevice: 
   // For each node in the nodes (there must be exactly two for a point-to-point link) a PointToPointNetDevice
   // is created and saved in the device container. 
