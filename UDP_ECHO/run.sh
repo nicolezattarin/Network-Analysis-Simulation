@@ -24,3 +24,7 @@ export 'NS_LOG=UdpEchoClientApplication=level_all|prefix_func|prefix_time:UdpEch
 
 # we can set values from command line
 # ./waf --runn "scratch/UdpEchoClientServer --ns3::PointToPointNetDevice::DataRate=5Mbps --ns3::PointToPointChannel::Delay=2ms"
+
+#when pcap enabled, we can see the packets in the pcap file
+# find .pcap files in the directory and open them with wireshark
+# whireshark *.pcap 
