@@ -23,7 +23,7 @@ An example of analysis follows. Consider a sequence of 1000 data, each of which 
 ### Simulation strategies
 1. Geographic Random Forwarding (GeRaF) for Ad Hoc and Sensor Networks: Multihop Performance [1][2].
 
-In [multihop_GeRaF](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/simulations/multihop_GeRaF)  section we present a simple implementation of the GeRaF algorithm for the simulation of Ad Hoc and Sensor networks. The algorithm is based on the [1] and [2]. The proposed idea is a forwarding technique based on geographical location of the nodes involved and random selection of the relaying node via contention among receivers. 
+In [multihop_GeRaF](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/multihop_GeRaF)  section we present a simple implementation of the GeRaF algorithm for the simulation of Ad Hoc and Sensor networks. The algorithm is based on the [1] and [2]. The proposed idea is a forwarding technique based on geographical location of the nodes involved and random selection of the relaying node via contention among receivers. 
 The figure below shows the performances of GeRaF compared with GAF [3]: 
 
 <p align="center">
