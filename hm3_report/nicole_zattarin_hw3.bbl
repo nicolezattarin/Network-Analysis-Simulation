@@ -1,0 +1,34 @@
+\begin{thebibliography}{3}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[M.(2003)]{zorzi2}
+ZORZI M.
+\newblock Geographic random forwarding (geraf) for adhoc and sensor networks :
+  Multihop performance.
+\newblock \emph{IEEE Trans. Mobile Comput.}, 2\penalty0 (4):\penalty0 337--365,
+  2003.
+\newblock URL \url{https://cir.nii.ac.jp/crid/1571980075820873728}.
+
+\bibitem[Xu et~al.(2001)Xu, Heidemann, and Estrin]{gaf}
+Ya~Xu, John Heidemann, and Deborah Estrin.
+\newblock Geography-informed energy conservation for ad hoc routing.
+\newblock In \emph{Proceedings of the 7th Annual International Conference on
+  Mobile Computing and Networking}, MobiCom '01, page 70–84, New York, NY,
+  USA, 2001. Association for Computing Machinery.
+\newblock ISBN 1581134223.
+\newblock \doi{10.1145/381677.381685}.
+\newblock URL \url{https://doi.org/10.1145/381677.381685}.
+
+\bibitem[Zorzi and Rao(2003)]{zorzi1}
+M.~Zorzi and R.R. Rao.
+\newblock Geographic random forwarding (geraf) for ad hoc and sensor networks:
+  energy and latency performance.
+\newblock \emph{IEEE Transactions on Mobile Computing}, 2\penalty0
+  (4):\penalty0 349--365, 2003.
+\newblock \doi{10.1109/TMC.2003.1255650}.
+
+\end{thebibliography}
