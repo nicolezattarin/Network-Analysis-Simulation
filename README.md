@@ -34,11 +34,11 @@ In this section we present NS3 network simulations, in particular, each folder c
 
 1. 2-nodes p2p UDP Echo Protocol: in [udp_echo](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/udp_echo) we present a simple implementation of the UDP Echo Protocol for the simulation of 2-nodes p2p networks. The network structure follows:
 <p align="center">
-  <img src="udp_echo/scheme.jpg" width="400" /></p>
+  <img src="udp_echo/scheme.jpeg" width="400" /></p>
 
 2. Simple p2p-csma BUS protocol: in [bus](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/bus) we present a simple implementation of a bus with a 2p2 link and a variable number of csma, the network structure follows:
 <p align="center">
-  <img src="bus/scheme.jpg" width="400" /></p>
+  <img src="bus/scheme.jpeg" width="400" /></p>
 
 **References:**
 
