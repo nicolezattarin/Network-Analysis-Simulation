@@ -29,6 +29,17 @@ The figure below shows the performances of GeRaF compared with GAF [3]:
 <p align="center">
   <img src="multihop_GeRaF/figures/multihop_GeRaF_N100_distance5.png" width="400" /></p>
 
+### Network simulation
+In this section we present NS3 network simulations, in particular, each folder contains the code for the simulation, a file to run it and additional files to visualize the results. Note that these files are meant to be pasted in the scratch directory of ns-3.* and run from ns-3 repository.
+
+1. 2-nodes p2p UDP Echo Protocol: in [udp_echo](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/udp_echo) we present a simple implementation of the UDP Echo Protocol for the simulation of 2-nodes p2p networks. The network structure follows:
+<p align="center">
+  <img src="udp_echo/scheme.jpg" width="400" /></p>
+
+2. Simple p2p-csma BUS protocol: in [bus](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/bus) we present a simple implementation of a bus with a 2p2 link and a variable number of csma, the network structure follows:
+<p align="center">
+  <img src="bus/scheme.jpg" width="400" /></p>
+
 **References:**
 
 [1] M. Zorzi, R.R. Rao, “Geographic Random Forwarding (GeRaF) for ad hoc and sensor networks: multihop performance,” in IEEE Trans. on Mobile Computing, vol. 2, n. 4, Oct.-Dec. 2003.
