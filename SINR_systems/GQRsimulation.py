@@ -69,7 +69,7 @@ fig.savefig("figures/GQRcellular_system.pdf", bbox_inches='tight')
 #                               Multi-access                                   #
 ################################################################################
 print("\n\nMULTI-ACCESS SIMULATION")
-G = [1+2*i for i in range(40)]
+G = [1+5*i for i in range(10)]
 throughput_6dB = []
 throughput_10dB = []
 

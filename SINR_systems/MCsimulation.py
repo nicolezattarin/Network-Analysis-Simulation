@@ -44,6 +44,8 @@ def main():
     a = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
     outage_6dB = []
     outage_10dB = []
+    r0 = 0.3
+    R = 0.91
     for aa in a:
         np.random.seed(0)
         outage_6dB.append(cellular_system(r0, R, SIR_threshold=6, alpha=aa, sigma=8, verbose=False)['failure_prob'])
@@ -63,9 +65,10 @@ def main():
     #                               Multi-access                                   #
     ################################################################################
     print("\n\nMULTI-ACCESS SIMULATION")
-    G = [1+2*i for i in range(40)]
+    G = [1+5*i for i in range(20)]
     throughput_6dB = []
     throughput_10dB = []
+    
     for gg in G:
         np.random.seed(0)
         throughput_6dB.append(multi_access(r0, 1, SIR_threshold=6, G=gg, sigma=8, verbose=False)['success_prob'])

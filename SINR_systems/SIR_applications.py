@@ -1,5 +1,18 @@
 #SINR performance 
 import numpy as np
+
+def BoxMuller (mu, sigma):
+    """
+    params:
+    mu: mean
+    sigma: variance
+    """
+    u1 = np.random.uniform()
+    u2 = np.random.uniform()
+    z1 = np.sqrt(-2*np.log(u1))*np.cos(2*np.pi*u2)
+    z2 = np.sqrt(-2*np.log(u1))*np.sin(2*np.pi*u2)
+    return mu + z1*sigma
+
 def packet_radio(r0, R, SIR_threshold, inter_density, sigma, eta=4, maxiter=1000, verbose=True):
     """
     params:
@@ -13,6 +26,7 @@ def packet_radio(r0, R, SIR_threshold, inter_density, sigma, eta=4, maxiter=1000
     verbose: print progress
 
     """
+    np.random.seed(0)
     #assuming that threshold and sigma are given in dB, we need to convert to base e
     SIR_threshold = 0.1*np.log(10)*SIR_threshold
     sigma = 0.1*np.log(10)*sigma
@@ -22,12 +36,12 @@ def packet_radio(r0, R, SIR_threshold, inter_density, sigma, eta=4, maxiter=1000
         k = np.random.poisson(lam=np.pi*inter_density*R**2)
         # for all k points we generate xi gaussian wirth mean 0 and variance sigma, Ri exponential with unit mean
         # ri is the distance from the transmitter to the interferer, thus uniform in [0, R]
-        xi = np.array([np.random.normal(0, sigma) for i in range(k)])
-        RR = np.array([np.random.exponential(1) for i in range(k)])
+        xi = np.array([BoxMuller (0, sigma) for i in range(k)])
+        RR = np.array([np.random.exponential(1/2) for i in range(k)])
         r = np.array([R*np.random.uniform()**0.5 for i in range(k)])
         xi_0 = np.random.normal(0, sigma)
-        R_0 = np.random.exponential(1)
-        checkvar = R_0**2*np.exp(xi_0)*r0**(-eta)/(np.sum(RR**2*np.exp(xi)*r**(-eta)))
+        RR_0 = np.random.exponential(1/2)
+        checkvar = RR_0*np.exp(xi_0)*r0**(-eta)/(np.sum(RR*np.exp(xi)*r**(-eta)))
         if checkvar > SIR_threshold: successes += 1
         if verbose and t%100==0: 
             print(" iter {:.2f}, k {:.2f}, checkvar {:.2f}, threshold {:.2f}, successes {:.2f}"\
@@ -53,6 +67,8 @@ def cellular_system(r0, R, SIR_threshold, alpha, sigma, eta=4, maxiter=1000, ver
     maxiter: number of iterations
     verbose: print progress
     """
+    np.random.seed(0)
+
     #assuming that threshold and sigma are given in dB, we need to convert to base e
     SIR_threshold = 0.1*np.log(10)*SIR_threshold
     sigma = 0.1*np.log(10)*sigma
@@ -62,12 +78,12 @@ def cellular_system(r0, R, SIR_threshold, alpha, sigma, eta=4, maxiter=1000, ver
         k = np.random.binomial(6, alpha)
         # for all k points we generate xi gaussian wirth mean 0 and variance sigma, Ri exponential with unit mean
         # ri is the distance from the transmitter to the interferer, thus uniform in [0, R]
-        xi = np.array([np.random.normal(0, sigma) for i in range(k)])
-        RR = np.array([np.random.exponential(1) for i in range(k)])
+        xi = np.array([BoxMuller (0, sigma) for i in range(k)])
+        RR = np.array([np.random.exponential(1/2) for i in range(k)])
         r = np.array([R*np.random.uniform()**0.5 for i in range(k)])
         xi_0 = np.random.normal(0, sigma)
-        R_0 = np.random.exponential(1)
-        checkvar = R_0**2*np.exp(xi_0)*r0**(-eta)/(np.sum(RR**2*np.exp(xi)*r**(-eta)))
+        RR_0 = np.random.exponential(1/2)
+        checkvar = RR_0*np.exp(xi_0)*r0**(-eta)/(np.sum(RR*np.exp(xi)*r**(-eta)))
         if checkvar > SIR_threshold: successes += 1
         if verbose and t%100==0: 
             print(" iter {:.2f}, k {:.2f}, checkvar {:.2f}, threshold {:.2f}, successes {:.2f}"\
@@ -94,6 +110,7 @@ def multi_access(r0, R, SIR_threshold, G, sigma, eta=4, maxiter=1000, verbose=Tr
     maxiter: number of iterations
     verbose: print progress
     """
+    np.random.seed(0)
     #assuming that threshold and sigma are given in dB, we need to convert to base e
     SIR_threshold = 0.1*np.log(10)*SIR_threshold
     sigma = 0.1*np.log(10)*sigma
@@ -106,10 +123,10 @@ def multi_access(r0, R, SIR_threshold, G, sigma, eta=4, maxiter=1000, verbose=Tr
             continue
         # for all k points we generate xi gaussian wirth mean 0 and variance sigma, Ri exponential with unit mean
         # ri is the distance from the transmitter to the interferer, thus uniform in [0, R]
-        xi = np.array([np.random.normal(0, sigma) for i in range(k)])
-        RR = np.array([np.random.exponential(1) for i in range(k)])
+        xi = np.array([BoxMuller (0, sigma) for i in range(k)])
+        RR = np.array([np.random.exponential(1/2) for i in range(k)])
         r = np.array([R*np.random.uniform()**0.5 for i in range(k)])
-        checkvar = np.max(RR**2*np.exp(xi)*r**(-eta))/(np.sum(RR**2*np.exp(xi)*r**(-eta)))
+        checkvar = np.max(RR*np.exp(xi)*r**(-eta))/(np.sum(RR*np.exp(xi)*r**(-eta)))
         if checkvar > SIR_threshold/(1+SIR_threshold): successes += 1
         if verbose and t%100==0: 
             print(" iter {:.2f}, k {:.2f}, checkvar {:.2f}, threshold {:.2f}, successes {:.2f}"\

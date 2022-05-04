@@ -71,6 +71,8 @@ def gauss(r, sigma):
     return 1/(sigma*np.sqrt(2*np.pi))*np.exp(-r**2/(2*sigma**2))
 
 def GQR_packet_radio (r0, R, SIR_threshold, inter_density, sigma, eta=4):
+    SIR_threshold = 0.1*np.log(10)*SIR_threshold
+    sigma = 0.1*np.log(10)*sigma
 
     def Integral_r(xi, r0, xi_0, SIR_threshold, sigma, R, eta): 
         def func_r (r, xi, r0, xi_0, SIR_threshold, sigma, R, eta):#only r is var, all the rest is arg
@@ -101,6 +103,10 @@ def GQR_packet_radio (r0, R, SIR_threshold, inter_density, sigma, eta=4):
     return r
 
 def GQR_cellular_system (r0, R, SIR_threshold, alpha, sigma, eta, R1, R2):
+    # SIR_threshold = 0.1*np.log(10)*SIR_threshold
+    # sigma = 0.1*np.log(10)*sigma
+    SIR_threshold = 10**(SIR_threshold*0.1)
+    sigma = 10**(sigma*0.1)
 
     def Integral_r(xi, r0, xi_0, SIR_threshold, sigma, R, eta, R1, R2):
         def func_r (r, xi, r0, xi_0, SIR_threshold, sigma, R, eta):#only r is var, all the rest is arg
@@ -139,6 +145,8 @@ def GQR_cellular_system (r0, R, SIR_threshold, alpha, sigma, eta, R1, R2):
     return r
 
 def GQRmulti_access (r0, R, SIR_threshold, G, sigma, eta=4):
+    SIR_threshold = 0.1*np.log(10)*SIR_threshold
+    sigma = 0.1*np.log(10)*sigma
 
     def Integral_r(xi, r0, xi_0, SIR_threshold, sigma, R, eta): 
         def func_r (r, xi, r0, xi_0, SIR_threshold, sigma, R, eta):#only r is var, all the rest is arg
