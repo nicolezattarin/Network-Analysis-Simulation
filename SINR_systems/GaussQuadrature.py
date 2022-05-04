@@ -1,35 +1,38 @@
 import numpy as np
-from scipy import integrate
+N_GQR = 20
 
-def GaussWeights(N):
-    vs = np.loadtxt('GaussAbscissa/abs_{}.txt'.format(N), delimiter=',', dtype=float)
-    ws = np.loadtxt('GaussWeights/ws_{}.txt'.format(N), delimiter=',', dtype=float)
-    return ws, vs
+def Quad(f, a, b, args=(), N=N_GQR):
+    xs, w = np.polynomial.legendre.leggauss(N)
+    #debug
+    # print('LEGENDRE')
+    # print('weights ', w)
+    # print('x ', xs)
+    # if len(xs) != len(w): print("lengths dont match")
 
-def Quad(f, a, b, args, N=50):
-    if N<4 or N>64: raise ValueError('N must be between 4 and 64')
-    w, xs = GaussWeights(N)
     w = np.array(w)
     xs = np.array(xs)
-    xs = ((b-a)*xs + a+b)/2
+    xs = ((b-a)*xs+a+b)/2
     w = (b-a)/2*w
-    int = 0
-    for ww, xx in zip(w, xs):
-        int+=f(xx, *args)*ww
+    
+    int = np.sum([f(xx, *args)*ww for xx, ww in zip(xs, w)])
     return int
 
-def GaussQuad(f, sigma, args, N=50):
-    if N<4 or N>64: raise ValueError('N must be between 4 and 64')
-    w, xs = GaussWeights(N)
+def GaussQuad(f, sigma, args=(), N=N_GQR):
+    xs, w = np.polynomial.hermite.hermgauss(N)
+    #debug
+    # print('HERMITE')
+    # print('weights ', w)
+    # print('x ', xs)
+    # if len(xs) != len(w): print("lengths dont match")
+
     w = np.array(w)
     xs = np.array(xs)
     w = w/np.sqrt(np.pi)
     xs = xs*sigma*np.sqrt(2)
-    int = 0
-    for ww, xx in zip(w, xs):
-        int+=f(xx, *args)*ww
-    return int
 
+    int = np.sum([f(xx, *args)*ww for xx, ww in zip(xs, w)])
+    return int
+ 
 def gauss(r, sigma):
     return 1/(sigma*np.sqrt(2*np.pi))*np.exp(-r**2/(2*sigma**2))
 
