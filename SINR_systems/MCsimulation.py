@@ -1,5 +1,5 @@
 import numpy as np
-from SIR_applications import packet_radio, cellular_system, multi_access
+from MonteCarloSINR import packet_radio, cellular_system, multi_access
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -21,9 +21,9 @@ def main():
         print("6db, density {}, success prob {:.2f}".format(ll, psuccess_6dB[-1]))
         print("10db, density {}, success prob {:.2f}".format(ll, psuccess_10dB[-1]))
     
-    # plot
+    # # plot
     sns.set_theme(style="white", font_scale=2, palette="Dark2")
-    fig, ax = plt.subplots(figsize=(10,6))
+    # fig, ax = plt.subplots(figsize=(10,6))
     ms = 10
     lw = 2
     ls = '--'
@@ -41,15 +41,14 @@ def main():
     #                               Cellular system                                #
     ################################################################################
     print("\n\nCELLULAR SYSTEM SIMULATION")
-    a = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    a = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
     outage_6dB = []
     outage_10dB = []
-    r0 = 0.3
     R = 0.91
     for aa in a:
         np.random.seed(0)
-        outage_6dB.append(cellular_system(r0, R, SIR_threshold=6, alpha=aa, sigma=8, verbose=False)['failure_prob'])
-        outage_10dB.append(cellular_system(r0, R, SIR_threshold=10, alpha=aa, sigma=8, verbose=False)['failure_prob'])
+        outage_6dB.append(cellular_system(R, SIR_threshold=6, alpha=aa, sigma=8, verbose=False)['failure_prob'])
+        outage_10dB.append(cellular_system(R, SIR_threshold=10, alpha=aa, sigma=8, verbose=False)['failure_prob'])
         print("6db, prob alpha {}, outage prob {:.2f}".format(aa, outage_6dB[-1]))
         print("10db, prob alpha {}, outage prob {:.2f}".format(aa, outage_6dB[-1]))
 
@@ -65,14 +64,14 @@ def main():
     #                               Multi-access                                   #
     ################################################################################
     print("\n\nMULTI-ACCESS SIMULATION")
-    G = [1+5*i for i in range(20)]
+    G = [2+i*5 for i in range(0,20)]
+
     throughput_6dB = []
     throughput_10dB = []
-    
+    R=1
     for gg in G:
-        np.random.seed(0)
-        throughput_6dB.append(multi_access(r0, 1, SIR_threshold=6, G=gg, sigma=8, verbose=False)['success_prob'])
-        throughput_10dB.append(multi_access(r0, 1, SIR_threshold=10, G=gg, sigma=8, verbose=False)['success_prob'])
+        throughput_6dB.append(multi_access(R,  SIR_threshold=6, G=gg, sigma=8, verbose=False)['success_prob'])
+        throughput_10dB.append(multi_access(R, SIR_threshold=10, G=gg, sigma=8, verbose=False)['success_prob'])
         print("6db, G {}, throughput {:.2f}".format(gg, throughput_6dB[-1]))
         print("10db, G {}, throughput {:.2f}".format(gg, throughput_6dB[-1]))
 
