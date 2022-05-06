@@ -23,13 +23,13 @@ def main():
     
     # # plot
     sns.set_theme(style="white", font_scale=2, palette="Dark2")
-    # fig, ax = plt.subplots(figsize=(10,6))
+    fig, ax = plt.subplots(figsize=(10,6))
     ms = 10
     lw = 2
     ls = '--'
     sns.lineplot(x=l, y=psuccess_6dB, ax=ax, label="threshold 6dB", lw=lw, marker="o", ms=ms, ls=ls)
     sns.lineplot(x=l, y=psuccess_10dB, ax=ax, label="threshold 10dB", lw=lw, marker="o", ms=ms, ls=ls)
-    ax.set_xlabel("interference density")
+    ax.set_xlabel(r"$\lambda$")
     ax.set_ylabel("success probability")
     ax.set_xscale("log")
 
@@ -56,7 +56,7 @@ def main():
     sns.lineplot(x=a, y=outage_6dB, ax=ax, label="threshold 6dB", lw=lw, marker="o", ms=ms, ls=ls)
     sns.lineplot(x=a, y=outage_10dB, ax=ax, label="threshold 10dB", lw=lw, marker="o", ms=ms, ls=ls)
 
-    ax.set_xlabel("interference probability")
+    ax.set_xlabel(r"$\alpha$")
     ax.set_ylabel("outage probability")
     fig.savefig("figures/cellular_system.pdf", bbox_inches='tight')
 
@@ -70,8 +70,10 @@ def main():
     throughput_10dB = []
     R=1
     for gg in G:
-        throughput_6dB.append(multi_access(R,  SIR_threshold=6, G=gg, sigma=8, verbose=False)['success_prob'])
-        throughput_10dB.append(multi_access(R, SIR_threshold=10, G=gg, sigma=8, verbose=False)['success_prob'])
+        r = multi_access(R,  SIR_threshold=6, G=gg, sigma=8, verbose=False)
+        s = multi_access(R,  SIR_threshold=10, G=gg, sigma=8, verbose=False)
+        throughput_6dB.append(r['success_prob'])
+        throughput_10dB.append(s['success_prob'])
         print("6db, G {}, throughput {:.2f}".format(gg, throughput_6dB[-1]))
         print("10db, G {}, throughput {:.2f}".format(gg, throughput_6dB[-1]))
 

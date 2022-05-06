@@ -30,7 +30,7 @@ lw = 2
 ls = '--'
 sns.lineplot(x=l, y=psuccess_6dB, ax=ax, label="threshold 6dB", lw=lw, marker="o", ms=ms, ls=ls)
 sns.lineplot(x=l, y=psuccess_10dB, ax=ax, label="threshold 10dB", lw=lw, marker="o", ms=ms, ls=ls)
-ax.set_xlabel("interference density")
+ax.set_xlabel(r"$\lambda$")
 ax.set_ylabel("success probability")
 ax.set_xscale("log")
 
@@ -61,31 +61,43 @@ fig, ax = plt.subplots(figsize=(10,6))
 sns.lineplot(x=a, y=outage_6dB, ax=ax, label="threshold 6dB", lw=lw, marker="o", ms=ms, ls=ls)
 sns.lineplot(x=a, y=outage_10dB, ax=ax, label="threshold 10dB", lw=lw, marker="o", ms=ms, ls=ls)
 
-ax.set_xlabel("interference probability")
+ax.set_xlabel(r"$\alpha$")
 ax.set_ylabel("outage probability")
 fig.savefig("figures/GQRcellular_system.pdf", bbox_inches='tight')
 
 ################################################################################
 #                               Multi-access                                   #
 ################################################################################
-print("\n\nMULTI-ACCESS SIMULATION")
-G = [2+i*5 for i in range(0,20)]
-throughput_6dB = []
-throughput_10dB = []
+# print("\n\nMULTI-ACCESS SIMULATION")
+# G = [2+i*5 for i in range(0,20)]
+# throughput_6dB = []
+# throughput_10dB = []
+# capture_probs_6dB = []
+# capture_probs_10dB = []
+# R = 1
+# for gg in G:
+#     np.random.seed(0)
+#     r = GQRmulti_access(R, SIR_threshold=6, G=gg, sigma=8)
+#     s = GQRmulti_access(R, SIR_threshold=10, G=gg, sigma=8)
+#     throughput_6dB.append(r['success_prob'])
+#     throughput_10dB.append(s['success_prob'])
+#     capture_probs_6dB.append(r['capture_prob'])
+#     capture_probs_10dB.append(s['capture_prob'])
+#     print("6db, G {}, throughput {:.2f}".format(gg, throughput_6dB[-1]))
+#     print("10db, G {}, throughput {:.2f}".format(gg, throughput_6dB[-1]))
+#     print("6db, G {}, capture prob {}".format(gg, capture_probs_6dB[-1]))
+#     print("10db, G {}, capture prob {}".format(gg, capture_probs_10dB[-1]))
 
-R = 1
-for gg in G:
-    np.random.seed(0)
-    throughput_6dB.append(GQRmulti_access(R, SIR_threshold=6, G=gg, sigma=8)['success_prob'])
-    throughput_10dB.append(GQRmulti_access(R, SIR_threshold=10, G=gg, sigma=8)['success_prob'])
-    print("6db, G {}, throughput {:.2f}".format(gg, throughput_6dB[-1]))
-    print("10db, G {}, throughput {:.2f}".format(gg, throughput_6dB[-1]))
 
-fig, ax = plt.subplots(figsize=(10,6))
-sns.lineplot(x=G, y=throughput_6dB, ax=ax, label="threshold 6dB", lw=lw, marker="o", ms=ms, ls=ls)
-sns.lineplot(x=G, y=throughput_10dB, ax=ax, label="threshold 10dB", lw=lw, marker="o", ms=ms, ls=ls)
+# capture_probs_6dB = np.array(capture_probs_6dB)
+# capture_probs_10dB = np.array(capture_probs_10dB)
+# np.savetxt("capture_probs_6dB.txt", capture_probs_6dB)
+# np.savetxt("capture_probs_10dB.txt", capture_probs_10dB)
+# fig, ax = plt.subplots(figsize=(10,6))
+# sns.lineplot(x=G, y=throughput_6dB, ax=ax, label="threshold 6dB", lw=lw, marker="o", ms=ms, ls=ls)
+# sns.lineplot(x=G, y=throughput_10dB, ax=ax, label="threshold 10dB", lw=lw, marker="o", ms=ms, ls=ls)
 
-ax.set_xlabel("Average number of transmissions per slot")
-ax.set_ylabel("throughput")
-fig.savefig("figures/GQRmulti_access.pdf", bbox_inches='tight')
+# ax.set_xlabel("Average number of transmissions per slot")
+# ax.set_ylabel("throughput")
+# fig.savefig("figures/GQRmulti_access.pdf", bbox_inches='tight')
 
