@@ -194,14 +194,12 @@ int main (int argc, char *argv[]){
   app1->SetStopTime (Seconds (20.));
   
   // Rate 2: destination  n1
-  
   uint16_t sinkPort2 = 8081;
   Address sinkAddress2 (InetSocketAddress (interfaces_L1.GetAddress (1), sinkPort2));
   PacketSinkHelper packetSinkHelper2 ("ns3::TcpSocketFactory", InetSocketAddress (Ipv4Address::GetAny (), sinkPort2));
   ApplicationContainer sinkApps2 = packetSinkHelper2.Install (nodes_L1.Get (1));
   sinkApps2.Start (Seconds (0.));
   sinkApps2.Stop (Seconds (20.));
-
   
   // Rate 2: origin n2
   Ptr<Socket> ns3TcpSocket2 = Socket::CreateSocket (nodes_L2.Get (1), TcpSocketFactory::GetTypeId ());
@@ -219,7 +217,6 @@ int main (int argc, char *argv[]){
   ApplicationContainer sinkApps3 = packetSinkHelper3.Install (nodes_L1.Get (1));
   sinkApps3.Start (Seconds (0.));
   sinkApps3.Stop (Seconds (20.));
-
 
   // Rate 3: origin n3
   Ptr<Socket> ns3TcpSocket3 = Socket::CreateSocket (nodes_L3.Get (1), TcpSocketFactory::GetTypeId ());
@@ -251,7 +248,6 @@ int main (int argc, char *argv[]){
   pointToPoint_L1.EnablePcap ("tcp-link", nodes_L1.Get (1)->GetId (), 0);
   pointToPoint_L2.EnablePcap ("tcp-link", nodes_L2.Get (0)->GetId (), 0);
   pointToPoint_L3.EnablePcap ("tcp-link", nodes_L3.Get (0)->GetId (), 0);
-
 
   Simulator::Stop (Seconds (20));
   Simulator::Run ();
