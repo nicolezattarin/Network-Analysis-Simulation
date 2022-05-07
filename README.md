@@ -29,7 +29,14 @@ The figure below shows the performances of GeRaF compared with GAF [3]:
 <p align="center">
   <img src="multihop_GeRaF/figures/multihop_GeRaF_N100_distance5.png" width="400" /></p>
   
-2. SINR systems:
+2. SINR systems: in [SINR_systems](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/SINR_systems) we consider physical systems subjected to noise and interference, in particular we focus on the following scenarios:
+ - Packet radio: a packet has to be delivered to an intended user, which is an an area characterized by a poisson distribution of interferes.
+ - Cellular systems: an hexagonal cell is surrounded by cells of the same kind;
+ - ALOHA: a multi access system in similar to the packet radio scenario, but in which every user can be potentially the intended or an interfere. 
+We compute success and outage probabilities as function of the specific parameters of the system. Results are obtained with MC simulation and numerical integration with gaussian quadrature rules, in particular a possible outcome for the packet radio scenario follows:
+<p align="center">
+  <img src="SINR_systems/figures/packet_radio.png" width="500" /></p>
+
 3. Single service queue: in [single_server_queue](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/single_server_queue) we perform a discrete-time simulation of a single server queue with finite buffer size, under the assumption that arrivals cannot leave in the same slot in which they arrive. We consider the following situations:
   - P [1 arrival] = P [2 arrivals] = a, P [0 arrival] = 1 − 2a, a ∈ [0, 0.5], and single service time for each user;
   - P [1 arrival] = P [0 arrival] = 0.5 and geometric service time with mean probability b.
