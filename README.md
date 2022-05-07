@@ -46,8 +46,8 @@ We can observe the behaviour of the queue state for different values of utilizat
    <img src="single_server_queue/figures/queue_size_vs_time_a=0.50.png" width="400" />
 </p>
 
-### Network simulation
-In this section we present NS3 network simulations, in particular, each folder contains the code for the simulation, a file to run it and additional files to visualize the results. Note that these files are meant to be pasted in the scratch directory of ns-3.* and run from ns-3 repository.
+### NS3 Network simulation
+In this section we present NS3 network simulations, mostly rearranged from [ns3 tutorial](https://www.nsnam.org/docs/tutorial/html/). In particular, each folder contains the code for the simulation, a file to run it and additional files to visualize the results. Note that these files are meant to be pasted in the scratch directory of ns3 and run from ns3 repository.
 
 1. 2-nodes p2p UDP Echo Protocol: in [udp_echo](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/udp_echo) we present a simple implementation (from ns3 tutorial) of the UDP Echo Protocol for the simulation of 2-nodes p2p networks. The network structure follows:
 <p align="center">
@@ -56,6 +56,20 @@ In this section we present NS3 network simulations, in particular, each folder c
 2. Simple p2p-csma BUS protocol: in [bus](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/bus) we present a simple implementation (from ns3 tutorial) of a bus with a 2p2 link and a variable number of csma, the network structure follows:
 <p align="center">
   <img src="bus/scheme.jpeg" width="500" /></p>
+  
+3. 2 Nodes TCP: in [2nodes](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/TCP/2nodes) we perform the simulation of the following systema, to test callback functions and tracing:
+
+         node 0                 node 1
+   +----------------+    +----------------+
+   |    ns-3 TCP    |    |    ns-3 TCP    |
+   +----------------+    +----------------+
+   |    10.1.1.1    |    |    10.1.1.2    |
+   +----------------+    +----------------+
+   | point-to-point |    | point-to-point |
+   +----------------+    +----------------+
+           |                     |
+           +---------------------+
+                 5 Mbps, 2 ms
 
 **References:**
 
