@@ -17,7 +17,7 @@ An example of analysis follows. Consider a sequence of 1000 data, each of which 
 
 2. Random number generators: in [RNG](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/theoretical_tools/RNG) we pèrovide a class for the generation of random numbers (uniform, exponential, geometric, binomial, poisson) and we explore the use and limitations of these generators;
 
-<p align="center">
+<p float="center">
   <img src="/theoretical_tools/RNG/results/binomial_time_unif_cdf.png" width="800" /></p>
 
 ### Simulation strategies
@@ -28,6 +28,15 @@ The figure below shows the performances of GeRaF compared with GAF [3]:
 
 <p align="center">
   <img src="multihop_GeRaF/figures/multihop_GeRaF_N100_distance5.png" width="400" /></p>
+  
+2. SINR systems:
+3. Single service queue: in [single_server_queue](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/single_server_queue) we perform a discrete-time simulation of a single server queue with finite buffer size, under the assumption that arrivals cannot leave in the same slot in which they arrive. We consider the following situations:
+(a) P [1 arrival] = P [2 arrivals] = a, P [0 arrival] = 1 − 2a, a ∈ [0, 0.5], and single service time for each user;
+(b) P [1 arrival] = P [0 arrival] = 0.5 and geometric service time with mean probability b.
+We can observe the behaviour of the queue state for different values of utilization factor, an example follows:
+<p align="center">
+  <img src="single_server_queue/figures/queue_size_vs_time_a=0.25.png" width="400" /> <img src="single_server_queue/figures/queue_size_vs_time_a=0.33.png" width="400" />
+</p>
 
 ### Network simulation
 In this section we present NS3 network simulations, in particular, each folder contains the code for the simulation, a file to run it and additional files to visualize the results. Note that these files are meant to be pasted in the scratch directory of ns-3.* and run from ns-3 repository.
