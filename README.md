@@ -58,18 +58,12 @@ In this section we present NS3 network simulations, mostly rearranged from [ns3 
   <img src="bus/scheme.jpeg" width="500" /></p>
   
 3. 2 Nodes TCP: in [2nodes](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/TCP/2nodes) we perform the simulation of the following systema, to test callback functions and tracing:
-
-         node 0                 node 1
-   +----------------+    +----------------+
-   |    ns-3 TCP    |    |    ns-3 TCP    |
-   +----------------+    +----------------+
-   |    10.1.1.1    |    |    10.1.1.2    |
-   +----------------+    +----------------+
-   | point-to-point |    | point-to-point |
-   +----------------+    +----------------+
-           |                     |
-           +---------------------+
-                 5 Mbps, 2 ms
+<p align="center">
+  <img src="TCP/2nodes/scheme.png" width="300" /></p>
+  
+4. Overloaded TCP: in [overloaded](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/TCP/overloaded) we provide the code to simulate and parse results for the following network:
+<p align="center">
+  <img src="TCP/overloaded/scheme.png" width="400" /></p>
 
 **References:**
 
