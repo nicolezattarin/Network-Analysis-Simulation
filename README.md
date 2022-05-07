@@ -31,11 +31,12 @@ The figure below shows the performances of GeRaF compared with GAF [3]:
   
 2. SINR systems:
 3. Single service queue: in [single_server_queue](https://github.com/nicolezattarin/Network-Analysis-Simulation/tree/main/single_server_queue) we perform a discrete-time simulation of a single server queue with finite buffer size, under the assumption that arrivals cannot leave in the same slot in which they arrive. We consider the following situations:
-(a) P [1 arrival] = P [2 arrivals] = a, P [0 arrival] = 1 − 2a, a ∈ [0, 0.5], and single service time for each user;
-(b) P [1 arrival] = P [0 arrival] = 0.5 and geometric service time with mean probability b.
+  - P [1 arrival] = P [2 arrivals] = a, P [0 arrival] = 1 − 2a, a ∈ [0, 0.5], and single service time for each user;
+  - P [1 arrival] = P [0 arrival] = 0.5 and geometric service time with mean probability b.
 We can observe the behaviour of the queue state for different values of utilization factor, an example follows:
 <p align="center">
   <img src="single_server_queue/figures/queue_size_vs_time_a=0.25.png" width="400" /> <img src="single_server_queue/figures/queue_size_vs_time_a=0.33.png" width="400" />
+   <img src="single_server_queue/figures/queue_size_vs_time_a=0.50.png" width="400" />
 </p>
 
 ### Network simulation
