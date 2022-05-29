@@ -207,7 +207,7 @@ class random ():
         """
 
         if size == None or size == 1:
-            rand = -self.uniform(0,1)/lam
+            rand = -np.log(self.uniform(0,1))/lam
         else :
             size = int(size)
             rand = np.zeros(size)
