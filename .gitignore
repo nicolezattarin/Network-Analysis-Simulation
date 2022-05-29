@@ -129,7 +129,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
-
+hw4/*
 # mypy
 .mypy_cache/
 .dmypy.json
@@ -150,3 +150,5 @@ simulations/multihop_GeRaF/results/std_hops_N10_distance5.txt
 simulations/hm3_report/nicole_zattarin_hw3.tex
 simulations/hm3_report/nicole_zattarin_hw3.synctex(busy)
 SINR_systems/captureProb.ipynb
+LENA/*
+queue/*
