@@ -13,7 +13,7 @@ def BoxMuller (mu, sigma):
     z2 = np.sqrt(-2*np.log(u1))*np.sin(2*np.pi*u2)
     return mu + z1*sigma
 
-def packet_radio(r0, R, SIR_threshold, inter_density, sigma, eta=4, maxiter=1000, verbose=True):
+def packet_radio(r0, R, SIR_threshold, inter_density, sigma, eta=4, maxiter=10000, verbose=True):
     """
     params:
     r0: position of object
@@ -55,10 +55,11 @@ def packet_radio(r0, R, SIR_threshold, inter_density, sigma, eta=4, maxiter=1000
         'success_prob': successes/maxiter, 'failure_prob': (maxiter-successes)/maxiter}
     return r
 
-def cellular_system(R, SIR_threshold, alpha, sigma, eta=4, maxiter=1000, verbose=True):
+def cellular_system(R, N, SIR_threshold, alpha, sigma, eta=4, maxiter=10000, verbose=True):
     """
     params:
     R: maximal distance
+    N: reuse factor
     SIR_threshold: SIR threshold
     alpha: interfering probability
     sigma: variance of the gaussian distribution
@@ -67,6 +68,7 @@ def cellular_system(R, SIR_threshold, alpha, sigma, eta=4, maxiter=1000, verbose
     verbose: print progress
     """
     np.random.seed(0)
+    
     # we average als over 
     #assuming that threshold and sigma are given in dB, we need to convert to base e
     SIR_threshold = 0.1*np.log(10)*SIR_threshold
@@ -82,10 +84,12 @@ def cellular_system(R, SIR_threshold, alpha, sigma, eta=4, maxiter=1000, verbose
         # ri is the distance from the transmitter to the interferer, thus uniform in [0, R]
         xi = np.array([BoxMuller (0, sigma) for i in range(k)])
         RR = np.array([np.random.exponential(1/2) for i in range(k)])
-        r = np.array([R+R*np.random.uniform()**0.5 for i in range(k)])
+        # (sqrt(3*N)*R)-R)+ (2*R*rand())
+        # r = np.array([R+R*np.random.uniform()**0.5 for i in range(k)])
+        r = np.array([np.sqrt(3*N)*R-R +2*R*np.random.uniform() for i in range(k)])
         xi_0 = np.random.normal(0, sigma)
         RR_0 = np.random.exponential(1/2)
-        r0 = R*np.random.uniform()**0.5
+        r0 = R*np.sqrt(np.random.uniform())
         checkvar = RR_0*np.exp(xi_0)*r0**(-eta)/(np.sum(RR*np.exp(xi)*r**(-eta)))
         if checkvar > SIR_threshold: successes += 1
         if verbose and t%100==0: 
@@ -101,7 +105,7 @@ def cellular_system(R, SIR_threshold, alpha, sigma, eta=4, maxiter=1000, verbose
         'success_prob': successes/maxiter, 'failure_prob': (maxiter-successes)/maxiter}
     return r
 
-def multi_access(R, SIR_threshold, G, sigma, eta=4, maxiter=1000, verbose=True):
+def multi_access(R, SIR_threshold, G, sigma, eta=4, maxiter=10000, verbose=True):
     """
     params:
     r0: position of object
